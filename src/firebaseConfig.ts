@@ -91,7 +91,7 @@ export const loginUser = async (email: string, password: string) => {
 // 讀取所有user資料
 export const getUsersData = async () => {
   try {
-    const snapshot = await get(ref(db, "users"));
+    const snapshot = await get(ref(db, "users")); // 查詢users節點
     const usersObject = snapshot.val() || {};
     const usersArray = Object.entries(usersObject).map(([key, value]) => {
       if (typeof value === "object" && value !== null) {
