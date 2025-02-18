@@ -1,8 +1,8 @@
 // import { useState } from "react";
 import UserImage from "../assets/images/frog.jpg";
 import {
-  // MenuFoldOutlined,
-  // MenuUnfoldOutlined,
+  MenuFoldOutlined,
+  MenuUnfoldOutlined,
   UploadOutlined,
   UserOutlined,
   VideoCameraOutlined,
@@ -15,19 +15,41 @@ import { clearToken } from "../stores/userSlice";
 import { useDispatch } from "react-redux";
 import type { AppDispatch } from "../store";
 import Button from "@/components/ui/button";
+import { useEffect, useState } from "react";
+import { useGetUserRecord } from "@/hooks/useGetUserRecord";
+import { getCookie } from "@/utils/getCookie";
 
 const { Header, Sider, Content } = Layout;
 
 const LayoutComponent = () => {
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
-  // const [collapsed, setCollapsed] = useState(true);
+  const [collapsed, setCollapsed] = useState(true);
+  const [messageApi, contextHolder] = message.useMessage();
+
+  const [userId, setUserId] = useState("");
+  const { fetchUserRecord, isLoading } = useGetUserRecord();
+
+  useEffect(() => {
+    const retrievedUid = getCookie("uid") ?? "";
+    const retrievedToken = getCookie("token") ?? "";
+    setUserId(retrievedUid);
+
+    if (!retrievedToken) {
+      navigate("/login");
+    }
+  }, [navigate]);
+
+  useEffect(() => {
+    fetchUserRecord(userId);
+  }, [userId]);
 
   const logOutHandler = () => {
     document.cookie = "token=; max-age=0; path=/;";
+    document.cookie = "uid=; max-age=0; path=/;";
     dispatch(clearToken());
     navigate("/login");
-    message.success("登出成功");
+    messageApi.success("登出成功");
   };
 
   const items = {
@@ -35,42 +57,32 @@ const LayoutComponent = () => {
       {
         key: "1",
         icon: <UserOutlined />,
-        label: "基本資料",
+        label: "主頁",
+        onClick: () => navigate("/layout/home"),
       },
       {
         key: "2",
         icon: <VideoCameraOutlined />,
-        label: "我的作品",
+        label: "個人資訊",
+        onClick: () => navigate("/layout/user-info"),
       },
       {
         key: "3",
         icon: <UploadOutlined />,
-        label: "新增作品",
+        label: "排行榜",
+        onClick: () => navigate("/layout/rank"),
       },
       {
         key: "4",
         icon: <LogoutOutlined />,
         label: "LogOut",
+        onClick: logOutHandler,
       },
     ],
     navItems: [
       {
         key: "1",
-        label: "基本資料",
-      },
-      {
-        key: "2",
-        label: "我的作品",
-      },
-      {
-        key: "3",
-        label: "新增作品",
-      },
-    ],
-    userItems: [
-      {
-        key: "1",
-        label: "首頁",
+        label: "主頁",
         onClick: () => navigate("/layout/home"),
       },
       {
@@ -80,6 +92,23 @@ const LayoutComponent = () => {
       },
       {
         key: "3",
+        label: "排行榜",
+        onClick: () => navigate("/layout/rank"),
+      },
+    ],
+    userItems: [
+      // {
+      //   key: "1",
+      //   label: "首頁",
+      //   onClick: () => navigate("/layout/home"),
+      // },
+      {
+        key: "1",
+        label: "個人資訊",
+        onClick: () => navigate("/layout/user-info"),
+      },
+      {
+        key: "2",
         label: "登出",
         onClick: logOutHandler,
       },
@@ -88,13 +117,14 @@ const LayoutComponent = () => {
 
   return (
     <Layout className="h-screen">
+      {contextHolder}
       <Sider
         trigger={null}
-        // collapsed={collapsed}
+        collapsed={collapsed}
         breakpoint="lg"
         collapsedWidth="0"
       >
-        <div className="demo-logo-vertical" />
+        {/* <div className="demo-logo-vertical" /> */}
         <Menu
           theme="dark"
           mode="inline"
@@ -112,8 +142,8 @@ const LayoutComponent = () => {
         <Header className="flex items-center justify-between px-0 bg-slate-200 font-bold border-b border-gray-300">
           <Button
             type="text"
-            // icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-            // onClick={() => setCollapsed(!collapsed)}
+            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+            onClick={() => setCollapsed(!collapsed)}
             className="flex sm:hidden"
           />
 
@@ -142,12 +172,18 @@ const LayoutComponent = () => {
           </Dropdown>
         </Header>
 
-        <Content className="bg-slate-200">
-          <div className="w-full h-full overflow-y-auto">
-            <div className="max-w-full h-full whitespace-normal p-4">
-              <div className=" justify-center h-full bg-   p-4 shadow-lg rounded-md">
+        <Content className="bg-slate-200 flex-1 overflow-hidden">
+          <div className="w-full h-full overflow-hidden">
+            <div className="max-w-full h-full whitespace-normal p-4 overflow-hidden">
+              <div className="flex flex-col h-full bg-white p-4 shadow-lg rounded-md overflow-hidden">
                 <BreadCrumb />
-                <Outlet />
+                {isLoading ? (
+                  <div>loding...</div>
+                ) : (
+                  <div className="flex-1 overflow-hidden">
+                    <Outlet />
+                  </div>
+                )}
               </div>
             </div>
           </div>

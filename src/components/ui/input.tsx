@@ -10,7 +10,7 @@ interface Props extends InputProps {
 const Input = forwardRef<InputRef, Props>(
   ({ className, children, ...props }: Props, ref) => {
     return (
-      <AntdInput ref={ref} className={cn(className)} {...props}>
+      <AntdInput ref={ref} className={cn("rounded-full", className)} {...props}>
         {children}
       </AntdInput>
     );

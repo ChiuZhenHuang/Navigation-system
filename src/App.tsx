@@ -3,6 +3,7 @@ import LoginPage from "@/pages/loginPage";
 import RegisterPage from "@/pages/registerPage";
 import Home from "@/components/layout/home";
 import UserInfo from "@/components/layout/userInfo";
+import Rank from "@/components/layout/rank";
 import Layout from "@/pages/layout";
 import "antd/dist/reset.css"; // v5版本引入這個就好
 import "@/assets/all.scss";
@@ -18,6 +19,7 @@ function App() {
           <Route index element={<Navigate to="/layout/home" replace />} />
           <Route path="home" element={<Home />} />
           <Route path="user-info" element={<UserInfo />} />
+          <Route path="rank" element={<Rank />} />
         </Route>
       </Routes>
     </BrowserRouter>

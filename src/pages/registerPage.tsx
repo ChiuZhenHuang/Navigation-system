@@ -53,11 +53,7 @@ const RegisterPage = () => {
                 { max: 20, message: "使用者名稱最多20個字元！" },
               ]}
             >
-              <Input
-                placeholder="請輸入使用者名稱"
-                prefix={<UserOutlined />}
-                className="rounded-full"
-              />
+              <Input placeholder="請輸入使用者名稱" prefix={<UserOutlined />} />
             </Form.Item>
 
             <Form.Item
@@ -68,11 +64,7 @@ const RegisterPage = () => {
                 { type: "email", message: "Email格式要正確！" },
               ]}
             >
-              <Input
-                placeholder="請輸入Email"
-                prefix={<MailOutlined />}
-                className="rounded-full"
-              />
+              <Input placeholder="請輸入Email" prefix={<MailOutlined />} />
             </Form.Item>
 
             <Form.Item
@@ -86,12 +78,11 @@ const RegisterPage = () => {
               <Input.Password
                 placeholder="請輸入密碼"
                 prefix={<LockOutlined />}
-                className="rounded-full"
               />
             </Form.Item>
 
             <Form.Item className="mt-14">
-              <Button type="primary" htmlType="submit">
+              <Button type="primary" htmlType="submit" className="p-4">
                 {loading && (
                   <Spin
                     indicator={<LoadingOutlined spin className="text-white" />}
@@ -102,7 +93,9 @@ const RegisterPage = () => {
               </Button>
             </Form.Item>
 
-            <Button onClick={() => navigate("/login")}>返回登入頁面</Button>
+            <Button onClick={() => navigate("/login")} className="p-4">
+              返回登入頁面
+            </Button>
           </Form>
         </Col>
       </Row>

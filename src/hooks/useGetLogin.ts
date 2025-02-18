@@ -1,9 +1,14 @@
 import { useState } from "react";
 import { message } from "antd";
 import { useNavigate } from "react-router-dom";
-import { loginUser } from "../firebaseConfig";
+import { loginUser } from "@/firebaseConfig";
 import type { LoginData } from "@/types/userType";
-import { setUserEmail, setUserName, setToken } from "@/stores/userSlice";
+import {
+  // setUserEmail,
+  // setUserName,
+  setUserId,
+  setToken,
+} from "@/stores/userSlice";
 import { useDispatch } from "react-redux";
 
 export const useGetLogin = () => {
@@ -17,16 +22,25 @@ export const useGetLogin = () => {
       setLoading(true);
       const { email, password } = data;
       const res = await loginUser(email, password);
-      if (res.success && res.user) {
+      if (res?.success && res?.user) {
+        console.log("1111", res);
         const token = await res.user.getIdToken();
+        const uid = res.user.uid;
+
+        console.log(uid);
         const tomorrow = new Date();
         tomorrow.setDate(tomorrow.getDate() + 1);
         document.cookie = `token=${token};expires=${tomorrow.toUTCString()}`;
+        document.cookie = `uid=${uid};expires=${tomorrow.toUTCString()}`;
 
         console.log(`email:${res.user.email} , name:${res.userName}`);
-        dispatch(setUserEmail(res.user.email));
-        dispatch(setUserName(res.userName));
+        // dispatch(setUserEmail(res.user.email));
+        // dispatch(setUserName(res.userName));
+        dispatch(setUserId(res.user.uid));
         dispatch(setToken(token));
+
+        // dispatch(setTotalRecord(res.userRecords));
+
         messageApi.success("登入成功");
         navigate("/layout");
       } else {

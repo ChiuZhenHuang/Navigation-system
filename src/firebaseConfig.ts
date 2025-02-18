@@ -4,15 +4,16 @@ import {
   ref,
   set,
   // update
-  // push,
   // child,
   get,
+  push,
 } from "firebase/database";
 import {
   getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
+import type { Action } from "./types/recordType";
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -42,7 +43,7 @@ export const registerUser = async (
     );
     const user = userCredential.user;
     // 可以同時將用戶資料存入 Realtime Database
-    const newKey = user.uid; // 使用 Firebase Auth 的 uid 作為 key
+    const newKey = user.uid;
     await set(ref(db, "users/" + newKey), {
       name: name,
       email: email,
@@ -84,6 +85,38 @@ export const loginUser = async (email: string, password: string) => {
     return { success: false, error };
   }
 };
+// 登入
+// export const loginUser = async (email: string, password: string) => {
+//   const auth = getAuth();
+//   try {
+//     const userCredential = await signInWithEmailAndPassword(
+//       auth,
+//       email,
+//       password
+//     );
+//     const firebaseUser = userCredential.user;
+
+//     const userSnapshot = await get(ref(db, "users/" + firebaseUser.uid));
+//     const userData = userSnapshot.val();
+
+//     // 讀取紀錄資料
+//     const userRecords = await getUserRecords(firebaseUser.uid);
+
+//     if (userData) {
+//       return {
+//         success: true,
+//         user: firebaseUser,
+//         userName: userData.name || null,
+//         userRecords: userRecords.success ? userRecords.records : [], // 返回紀錄資料
+//       };
+//     } else {
+//       return { success: false, error: "User data not found" };
+//     }
+//   } catch (error: any) {
+//     console.error("Error logging in:", error);
+//     return { success: false, error };
+//   }
+// };
 
 // 更新user資料
 // export const updateUserData = async (userId: string) => {
@@ -116,5 +149,88 @@ export const getUsersData = async () => {
   } catch (error) {
     console.error("Error reading data:", error);
     throw error;
+  }
+};
+
+// -----------------新增
+// 儲存使用者的操作紀錄
+
+export const saveUserRecord = async (
+  userId: string,
+  action: Action,
+  timestamp: number
+) => {
+  try {
+    const userRecordsRef = ref(db, "users/" + userId + "/records");
+    const newRecordRef = push(userRecordsRef); // 使用 push 創建一個新的資料紀錄
+    const recordData = {
+      action,
+      timestamp,
+    };
+    await set(newRecordRef, recordData); // 儲存資料到 Firebase
+    console.log("Record saved successfully!");
+  } catch (error) {
+    console.error("Error saving user record:", error);
+  }
+};
+
+// 讀取使用者紀錄
+// export const getUserRecords = async (userId: string) => {
+//   try {
+//     const snapshot = await get(ref(db, "users/" + userId + "/records"));
+//     const records = snapshot.val();
+
+//     if (records) {
+//       const recordsArray = Object.entries(records).map(([key, value]) => {
+//         // 加入類型檢查，確保 value 是 object 且不為 null
+//         if (typeof value === "object" && value !== null) {
+//           return { ...value, id: key };
+//         } else {
+//           throw new Error("Unexpected data format");
+//         }
+//       });
+//       return { success: true, records: recordsArray };
+//     } else {
+//       return { success: false, message: "No records found" };
+//     }
+//   } catch (error) {
+//     console.error("Error reading user records:", error);
+//     return { success: false, error };
+//   }
+// };
+
+export const getUserRecords = async (userId: string) => {
+  try {
+    // 讀取該使用者的完整資料（包含 userName, email, records）
+    const snapshot = await get(ref(db, `users/${userId}`));
+    const userData = snapshot.val();
+
+    if (userData) {
+      const { name, email, records } = userData;
+
+      // 確保 records 存在並且是 object
+      const recordsArray =
+        records && typeof records === "object"
+          ? Object.entries(records).map(([key, value]) => {
+              if (typeof value === "object" && value !== null) {
+                return { ...value, id: key };
+              } else {
+                throw new Error("Unexpected data format in records");
+              }
+            })
+          : [];
+
+      return {
+        success: true,
+        name,
+        email,
+        records: recordsArray,
+      };
+    } else {
+      return { success: false, message: "User not found" };
+    }
+  } catch (error) {
+    console.error("Error reading user records:", error);
+    return { success: false, error };
   }
 };

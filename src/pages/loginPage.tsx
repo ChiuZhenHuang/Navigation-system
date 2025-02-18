@@ -35,9 +35,9 @@ const LoginPage = () => {
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
             requiredMark={false}
-            className="border border-slate-300 rounded-md bg-orange-200 p-6 max-w-md"
+            className="border border-slate-300 rounded-3xl bg-white shadow-lg p-6 max-w-md"
           >
-            <div className="flex justify-center font-bold text-2xl my-2">
+            <div className="flex justify-center font-bold text-2xl my-2 text-orange-600">
               會員登入
             </div>
 
@@ -52,7 +52,6 @@ const LoginPage = () => {
               <Input
                 placeholder="請輸入使用者Email"
                 prefix={<UserOutlined />}
-                className="rounded-full"
               />
             </Form.Item>
 
@@ -67,7 +66,6 @@ const LoginPage = () => {
               <Input.Password
                 placeholder="請輸入密碼"
                 prefix={<LockOutlined />}
-                className="rounded-full"
               />
             </Form.Item>
 
@@ -75,7 +73,7 @@ const LoginPage = () => {
               <Button
                 type="primary"
                 htmlType="submit"
-                className="bg-orange-500 hover:bg-orange-600 focus:outline-none focus:ring-0 focus:bg-orange-600 active:bg-orange-600"
+                className="p-4 bg-orange-500 hover:bg-orange-600 focus:outline-none focus:ring-0 focus:bg-orange-600 active:bg-orange-600"
               >
                 {loading && (
                   <Spin
@@ -87,7 +85,7 @@ const LoginPage = () => {
               </Button>
             </Form.Item>
 
-            <Button onClick={() => navigate("/register")}>
+            <Button onClick={() => navigate("/register")} className="p-4">
               還不是會員? 前往註冊
             </Button>
           </Form>

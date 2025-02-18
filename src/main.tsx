@@ -8,7 +8,6 @@ createRoot(document.getElementById("root")!).render(
   <Provider store={store}>
     <ConfigProvider
       theme={{
-        // token: { fontSize: 14 },
         components: {
           Layout: {
             siderBg: "#FFE3BA",
@@ -18,6 +17,9 @@ createRoot(document.getElementById("root")!).render(
             darkItemHoverBg: "#D49C66",
             darkItemSelectedBg: "#A1754D",
             darkItemColor: "#000000",
+          },
+          Card: {
+            headerBg: "#FFE3BA",
           },
         },
       }}

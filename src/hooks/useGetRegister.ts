@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { message } from "antd";
 import { useNavigate } from "react-router-dom";
-import { registerUser } from "../firebaseConfig";
+import { registerUser } from "@/firebaseConfig";
 import type { RegisterData } from "@/types/userType";
 
 export const useGetRegister = () => {
