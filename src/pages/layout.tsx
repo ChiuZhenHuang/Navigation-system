@@ -1,27 +1,29 @@
-import React, { useState } from "react";
+// import { useState } from "react";
 import UserImage from "../assets/images/frog.jpg";
 import {
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
+  // MenuFoldOutlined,
+  // MenuUnfoldOutlined,
   UploadOutlined,
   UserOutlined,
   VideoCameraOutlined,
   LogoutOutlined,
 } from "@ant-design/icons";
 import BreadCrumb from "../components/layout/breadCrumb";
-import { Button, Layout, Menu, message, Dropdown } from "antd";
+import { Layout, Menu, message, Dropdown } from "antd";
 import { useNavigate, Outlet } from "react-router-dom";
 import { clearToken } from "../stores/userSlice";
 import { useDispatch } from "react-redux";
 import type { AppDispatch } from "../store";
+import Button from "@/components/ui/button";
+
 const { Header, Sider, Content } = Layout;
 
-const LayoutComponent: React.FC = () => {
+const LayoutComponent = () => {
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
-  const [collapsed, setCollapsed] = useState(true);
+  // const [collapsed, setCollapsed] = useState(true);
 
-  const logOutHandler = (): void => {
+  const logOutHandler = () => {
     document.cookie = "token=; max-age=0; path=/;";
     dispatch(clearToken());
     navigate("/login");
@@ -88,7 +90,7 @@ const LayoutComponent: React.FC = () => {
     <Layout className="h-screen">
       <Sider
         trigger={null}
-        collapsed={collapsed}
+        // collapsed={collapsed}
         breakpoint="lg"
         collapsedWidth="0"
       >
@@ -110,8 +112,8 @@ const LayoutComponent: React.FC = () => {
         <Header className="flex items-center justify-between px-0 bg-slate-200 font-bold border-b border-gray-300">
           <Button
             type="text"
-            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-            onClick={() => setCollapsed(!collapsed)}
+            // icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+            // onClick={() => setCollapsed(!collapsed)}
             className="flex sm:hidden"
           />
 
@@ -142,9 +144,9 @@ const LayoutComponent: React.FC = () => {
 
         <Content className="bg-slate-200">
           <div className="w-full h-full overflow-y-auto">
-            <div className="max-w-full whitespace-normal p-4">
-              <BreadCrumb />
-              <div className=" flex justify-center">
+            <div className="max-w-full h-full whitespace-normal p-4">
+              <div className=" justify-center h-full bg-   p-4 shadow-lg rounded-md">
+                <BreadCrumb />
                 <Outlet />
               </div>
             </div>

@@ -1,38 +1,26 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Loading from "../loading";
-import { useDispatch } from "react-redux";
-import type { AppDispatch } from "../../store";
-import { setToken } from "../../stores/userSlice";
 import { getCookie } from "../../utils/getCookie";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
-  const dispatch: AppDispatch = useDispatch();
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const userName = useSelector((state: RootState) => state.user.userName);
+  const eamil = useSelector((state: RootState) => state.user.email);
 
   useEffect(() => {
     const retrievedToken = getCookie("token");
     if (!retrievedToken) {
       navigate("/login");
-    } else {
-      const waitLoading = setTimeout(() => {
-        setIsLoading(false);
-      }, 2000);
-      dispatch(setToken(retrievedToken));
-      return () => clearTimeout(waitLoading);
     }
   }, [navigate]);
 
-  // if (isLoading) {
-  //   return <Loading />;
-  // }
-
   return (
-    <>
-      {isLoading && <Loading />}
-      這裡是首頁
-    </>
+    <div className="p-4">
+      <div>歡迎 {userName} 回來！</div>
+      <div>您的Email：{eamil}</div>
+    </div>
   );
 };
 

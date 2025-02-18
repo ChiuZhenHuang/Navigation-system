@@ -2,19 +2,13 @@ import { useState } from "react";
 import { message } from "antd";
 import { useNavigate } from "react-router-dom";
 import { registerUser } from "../firebaseConfig";
-
-interface FormData {
-  name: string;
-  email: string;
-  password: string;
-}
+import type { RegisterData } from "@/types/userType";
 
 export const useGetRegister = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
-  const register = async (data: FormData) => {
+  const register = async (data: RegisterData) => {
     try {
       setLoading(true);
 
@@ -26,16 +20,14 @@ export const useGetRegister = () => {
         navigate("/login");
       } else {
         message.error("註冊失敗");
-        setError("註冊失敗");
       }
-    } catch (e: any) {
+    } catch (e) {
       console.error(e);
       message.error("註冊失敗");
-      setError("註冊失敗");
     } finally {
       setLoading(false);
     }
   };
 
-  return { register, loading, error };
+  return { register, loading };
 };

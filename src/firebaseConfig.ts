@@ -64,8 +64,21 @@ export const loginUser = async (email: string, password: string) => {
       email,
       password
     );
-    const user = userCredential.user;
-    return { success: true, user };
+
+    const firebaseUser = userCredential.user;
+
+    const userSnapshot = await get(ref(db, "users/" + firebaseUser.uid));
+    const userData = userSnapshot.val();
+
+    if (userData) {
+      return {
+        success: true,
+        user: firebaseUser,
+        userName: userData.name || null,
+      };
+    } else {
+      return { success: false, error: "User data not found" };
+    }
   } catch (error: any) {
     console.error("Error logging in:", error);
     return { success: false, error };

@@ -2,18 +2,17 @@ import { useState } from "react";
 import { message } from "antd";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../firebaseConfig";
-
-interface FormData {
-  email: string;
-  password: string;
-}
+import type { LoginData } from "@/types/userType";
+import { setUserEmail, setUserName, setToken } from "@/stores/userSlice";
+import { useDispatch } from "react-redux";
 
 export const useGetLogin = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [messageApi, contextHolder] = message.useMessage();
 
-  const login = async (data: FormData) => {
+  const login = async (data: LoginData) => {
     try {
       setLoading(true);
       const { email, password } = data;
@@ -23,20 +22,23 @@ export const useGetLogin = () => {
         const tomorrow = new Date();
         tomorrow.setDate(tomorrow.getDate() + 1);
         document.cookie = `token=${token};expires=${tomorrow.toUTCString()}`;
-        message.success("登入成功");
+
+        console.log(`email:${res.user.email} , name:${res.userName}`);
+        dispatch(setUserEmail(res.user.email));
+        dispatch(setUserName(res.userName));
+        dispatch(setToken(token));
+        messageApi.success("登入成功");
         navigate("/layout");
       } else {
-        message.error("登入失敗");
-        setError("登入失敗");
+        messageApi.error("登入失敗");
       }
     } catch (e) {
+      messageApi.error("登入失敗");
       console.error(e);
-      message.error("登入失敗");
-      setError("登入失敗");
     } finally {
       setLoading(false);
     }
   };
 
-  return { login, loading, error };
+  return { login, loading, contextHolder };
 };
