@@ -10,10 +10,10 @@ createRoot(document.getElementById("root")!).render(
       theme={{
         components: {
           Layout: {
-            siderBg: "#FFE3BA",
+            siderBg: "rgb(255 ,247 ,237 )",
           },
           Menu: {
-            darkItemBg: "#FFE3BA",
+            darkItemBg: "rgb(255 ,247 ,237 )",
             darkItemHoverBg: "#D49C66",
             darkItemSelectedBg: "#A1754D",
             darkItemColor: "#000000",

@@ -57,13 +57,13 @@ const LayoutComponent = () => {
       {
         key: "1",
         icon: <UserOutlined />,
-        label: "主頁",
+        label: "導航",
         onClick: () => navigate("/layout/home"),
       },
       {
         key: "2",
         icon: <VideoCameraOutlined />,
-        label: "個人資訊",
+        label: "每周任務",
         onClick: () => navigate("/layout/user-info"),
       },
       {
@@ -82,12 +82,12 @@ const LayoutComponent = () => {
     navItems: [
       {
         key: "1",
-        label: "主頁",
+        label: "導航",
         onClick: () => navigate("/layout/home"),
       },
       {
         key: "2",
-        label: "個人資訊",
+        label: "每周任務",
         onClick: () => navigate("/layout/user-info"),
       },
       {
@@ -139,7 +139,7 @@ const LayoutComponent = () => {
       </Sider>
 
       <Layout>
-        <Header className="flex items-center justify-between px-0 bg-slate-200 font-bold border-b border-gray-300">
+        <Header className="flex items-center justify-between px-0 bg-orange-50 font-bold border-b border-gray-300">
           <Button
             type="text"
             icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
@@ -172,7 +172,7 @@ const LayoutComponent = () => {
           </Dropdown>
         </Header>
 
-        <Content className="bg-slate-200 flex-1 overflow-hidden">
+        <Content className="bg-orange-50 flex-1 overflow-hidden">
           <div className="w-full h-full overflow-hidden">
             <div className="max-w-full h-full whitespace-normal p-4 overflow-hidden">
               <div className="flex flex-col h-full bg-white p-4 shadow-lg rounded-md overflow-hidden">
@@ -180,7 +180,7 @@ const LayoutComponent = () => {
                 {isLoading ? (
                   <div>loding...</div>
                 ) : (
-                  <div className="flex-1 overflow-hidden">
+                  <div className="flex-1 overflow-auto">
                     <Outlet />
                   </div>
                 )}

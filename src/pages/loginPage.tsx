@@ -23,7 +23,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="bg-orange-100">
+    <div className="bg-orange-50">
       {contextHolder}
       <Row justify="center" align="middle" className="h-screen">
         <Col xs={20} sm={16} md={12} xl={8}>
@@ -40,9 +40,11 @@ const LoginPage = () => {
             <div className="flex justify-center font-bold text-2xl my-2 text-orange-600">
               會員登入
             </div>
-
+            <div className="h-[100px] flex justify-center items-center">
+              圖片
+            </div>
             <Form.Item
-              label="Email"
+              // label="Email"
               name="email"
               rules={[
                 { required: true, message: "請輸入Email" },
@@ -50,13 +52,14 @@ const LoginPage = () => {
               ]}
             >
               <Input
-                placeholder="請輸入使用者Email"
+                placeholder="使用者Email"
                 prefix={<UserOutlined />}
+                className="rounded-xl p-2 hover:border-orange-500 border"
               />
             </Form.Item>
 
             <Form.Item
-              label="密碼"
+              // label="密碼"
               name="password"
               rules={[
                 { required: true, message: "請輸入密碼" },
@@ -64,8 +67,9 @@ const LoginPage = () => {
               ]}
             >
               <Input.Password
-                placeholder="請輸入密碼"
+                placeholder="密碼"
                 prefix={<LockOutlined />}
+                className="rounded-xl p-2 hover:border-orange-500 border"
               />
             </Form.Item>
 
@@ -73,7 +77,7 @@ const LoginPage = () => {
               <Button
                 type="primary"
                 htmlType="submit"
-                className="p-4 bg-orange-500 hover:bg-orange-600 focus:outline-none focus:ring-0 focus:bg-orange-600 active:bg-orange-600"
+                className="p-4 bg-orange-400 transition-colors hover:bg-orange-500/100"
               >
                 {loading && (
                   <Spin
@@ -85,7 +89,10 @@ const LoginPage = () => {
               </Button>
             </Form.Item>
 
-            <Button onClick={() => navigate("/register")} className="p-4">
+            <Button
+              onClick={() => navigate("/register")}
+              className="p-4 bg-white transition-colors !hover:text-orange-100"
+            >
               還不是會員? 前往註冊
             </Button>
           </Form>

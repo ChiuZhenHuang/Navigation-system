@@ -27,7 +27,7 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="bg-orange-100">
+    <div className="bg-orange-50">
       <Row justify="center" align="middle" className="h-screen">
         <Col xs={20} sm={16} md={12} xl={8}>
           <Form
@@ -38,14 +38,16 @@ const RegisterPage = () => {
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
             requiredMark={false}
-            className="border border-slate-300 rounded-md bg-orange-200 p-6 max-w-md"
+            className="border border-slate-300 rounded-3xl bg-white shadow-lg p-6 max-w-md"
           >
-            <div className="flex justify-center font-bold text-2xl my-2">
+            <div className="flex justify-center font-bold text-2xl my-2 text-orange-600">
               會員註冊
             </div>
-
+            <div className="h-[100px] flex justify-center items-center">
+              圖片
+            </div>
             <Form.Item
-              label="使用者名稱"
+              // label="使用者名稱"
               name="name"
               rules={[
                 { required: true, message: "請輸入使用者名稱" },
@@ -53,22 +55,30 @@ const RegisterPage = () => {
                 { max: 20, message: "使用者名稱最多20個字元！" },
               ]}
             >
-              <Input placeholder="請輸入使用者名稱" prefix={<UserOutlined />} />
+              <Input
+                placeholder="請輸入使用者名稱"
+                prefix={<UserOutlined />}
+                className="rounded-xl p-2 hover:border-orange-500 border"
+              />
             </Form.Item>
 
             <Form.Item
-              label="Email"
+              // label="Email"
               name="email"
               rules={[
                 { required: true, message: "請輸入Email" },
                 { type: "email", message: "Email格式要正確！" },
               ]}
             >
-              <Input placeholder="請輸入Email" prefix={<MailOutlined />} />
+              <Input
+                placeholder="請輸入Email"
+                prefix={<MailOutlined />}
+                className="rounded-xl p-2 hover:border-orange-500 border"
+              />
             </Form.Item>
 
             <Form.Item
-              label="密碼"
+              // label="密碼"
               name="password"
               rules={[
                 { required: true, message: "請輸入密碼" },
@@ -78,11 +88,16 @@ const RegisterPage = () => {
               <Input.Password
                 placeholder="請輸入密碼"
                 prefix={<LockOutlined />}
+                className="rounded-xl p-2 hover:border-orange-500 border"
               />
             </Form.Item>
 
             <Form.Item className="mt-14">
-              <Button type="primary" htmlType="submit" className="p-4">
+              <Button
+                type="primary"
+                htmlType="submit"
+                className="p-4 bg-orange-400 transition-colors hover:bg-orange-500/100"
+              >
                 {loading && (
                   <Spin
                     indicator={<LoadingOutlined spin className="text-white" />}

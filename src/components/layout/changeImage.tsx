@@ -78,8 +78,9 @@ const ChangeImage: React.FC<ChangeImageProps> = ({
   };
 
   return (
-    <div>
+    <div className="m-0">
       <Upload
+        className="m-0"
         name="avatar"
         showUploadList={false}
         beforeUpload={handleFileSelect}

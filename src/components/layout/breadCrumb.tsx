@@ -5,8 +5,9 @@ import { HomeOutlined } from "@ant-design/icons";
 // Record用法:key類型,value類型
 const breadcrumbMap: Record<string, string | JSX.Element> = {
   "/layout": <HomeOutlined />,
-  "/layout/home": "首頁",
+  "/layout/home": "導航",
   "/layout/user-info": "個人資訊",
+  "/layout/rank": "排行榜",
 };
 
 const BreadCrumb = () => {
