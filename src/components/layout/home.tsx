@@ -5,6 +5,7 @@ import Button from "@/components/ui/button";
 import Select from "@/components/ui/select";
 import { useEffect, useState } from "react";
 import { getCookie } from "@/utils/getCookie";
+import Maps from "@/components/layout/maps";
 
 const Home = () => {
   const userName = useSelector((state: RootState) => state.user.userName);
@@ -36,7 +37,7 @@ const Home = () => {
       <h5 className="mb-4">
         歡迎 <span className="font-bold">{userName}</span> 回來！
       </h5>
-      <div className="flex items-center">
+      <div className="flex items-center mb-4">
         <span className="min-w-[100px]">選擇您的車款：</span>
         <Select
           className="w-full"
@@ -45,8 +46,9 @@ const Home = () => {
           onChange={(value) => setSelectCarType(value)}
         />
       </div>
-      <br></br>
-      這裡放導航
+
+      {/* 導航 */}
+      <Maps />
       <Button
         type="primary"
         ghost
@@ -63,7 +65,7 @@ const Home = () => {
           });
         }}
       >
-        開始導航
+        沒用的home導航按鈕
       </Button>
     </div>
   );

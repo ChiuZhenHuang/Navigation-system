@@ -175,7 +175,7 @@ const LayoutComponent = () => {
         <Content className="bg-orange-50 flex-1 overflow-hidden">
           <div className="w-full h-full overflow-hidden">
             <div className="max-w-full h-full whitespace-normal p-4 overflow-hidden">
-              <div className="flex flex-col h-full bg-white p-4 shadow-lg rounded-md overflow-hidden">
+              <div className="flex flex-col h-full bg-white p-2 shadow-lg rounded-md overflow-hidden">
                 <BreadCrumb />
                 {isLoading ? (
                   <div>loding...</div>
