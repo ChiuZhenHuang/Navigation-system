@@ -1,4 +1,4 @@
-import UserImage from "../assets/images/frog.jpg";
+// import UserImage from "../assets/images/frog.jpg";
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
@@ -11,8 +11,8 @@ import BreadCrumb from "../components/layout/breadCrumb";
 import { Layout, Menu, message, Dropdown } from "antd";
 import { useNavigate, Outlet } from "react-router-dom";
 import { clearToken } from "../stores/userSlice";
-import { useDispatch } from "react-redux";
-import type { AppDispatch } from "../store";
+import { useDispatch, useSelector } from "react-redux";
+import type { RootState } from "../store";
 import Button from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { useGetUserRecord } from "@/hooks/useGetUserRecord";
@@ -21,7 +21,7 @@ import { getCookie } from "@/utils/getCookie";
 const { Header, Sider, Content } = Layout;
 
 const LayoutComponent = () => {
-  const dispatch: AppDispatch = useDispatch();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [collapsed, setCollapsed] = useState(true);
   const [messageApi, contextHolder] = message.useMessage();
@@ -29,6 +29,7 @@ const LayoutComponent = () => {
   const [userId, setUserId] = useState("");
   const { fetchUserRecord, isLoading } = useGetUserRecord();
 
+  const firsrName = useSelector((state: RootState) => state.user.firstName);
   useEffect(() => {
     const retrievedUid = getCookie("uid") ?? "";
     const retrievedToken = getCookie("token") ?? "";
@@ -161,12 +162,16 @@ const LayoutComponent = () => {
             placement="bottomRight"
             className="mx-3 cursor-pointer sm:block"
           >
-            <div className="w-12 h-12 border-2 border-white rounded-full flex items-center justify-center overflow-hidden">
-              <img
+            {/* w-12 h-12 */}
+            <div className="w-[48px] h-[48px] border-2 border-white text-center rounded-full flex items-center justify-center overflow-hidden">
+              {/* <img
                 src={UserImage}
                 alt="UserImage"
                 className="object-cover w-full h-full"
-              />
+              /> */}
+              <span className="object-cover w-full h-full text-xl flex justify-center items-center">
+                {firsrName}
+              </span>
             </div>
           </Dropdown>
         </Header>

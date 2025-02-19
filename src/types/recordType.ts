@@ -15,4 +15,5 @@ export interface ActionResponse {
     time: string;
     id?: string;
   };
+  timestamp: string;
 }

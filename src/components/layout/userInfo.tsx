@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Row, Col } from "antd";
-import UserImage from "@/assets/images/frog.jpg";
-import ChangeImage from "./changeImage";
+// import UserImage from "@/assets/images/frog.jpg";
+// import ChangeImage from "./changeImage";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 import Button from "@/components/ui/button";
@@ -10,10 +10,11 @@ import type { ActionResponse } from "@/types/recordType";
 import { useGetUserRecord } from "@/hooks/useGetUserRecord";
 import { getCookie } from "@/utils/getCookie";
 import { useNavigate } from "react-router-dom";
+import { formatToThousand } from "@/utils/method";
 
 const UserInfo = () => {
-  const [avatarUrl, setAvatarUrl] = useState(UserImage);
-
+  // const [avatarUrl, setAvatarUrl] = useState(UserImage);
+  const firsrName = useSelector((state: RootState) => state.user.firstName);
   const userName = useSelector((state: RootState) => state.user.userName);
   const record = useSelector((state: RootState) => state.record.totalRecord);
 
@@ -39,30 +40,29 @@ const UserInfo = () => {
   return (
     <>
       <Row justify="center" align="middle" className="m-4">
-        <Col
-          xs={24}
-          sm={8}
-          className="flex justify-center items-center sm:justify-start"
-        >
-          <div className="relative w-40 min-w-[115px] min-h-[115px] border-4 border-white">
+        <Col xs={24} sm={8} className="flex justify-center items-center">
+          {/* <div className="relative w-40 min-w-[115px] min-h-[115px] border-4 border-white">
             <img
               src={avatarUrl}
               alt="UserImage"
               className="object-cover w-full h-full"
             />
-          </div>
+          </div> */}
+          <span className="relative w-[115px] h-[115px] border-4 bg-orange-50 border-black rounded-full object-cover text-xl flex justify-center items-center font-bold">
+            {firsrName}
+          </span>
         </Col>
         <Col xs={24} sm={16} className="flex justify-center items-center">
           <div className="w-full">
             <div className="flex justify-center mt-2">
-              <p className="font-bold">{userName}</p>
+              <p className="font-bold text-2xl">{userName}</p>
             </div>
             <div className="flex flex-col justify-center items-center mt-2 sm:flex-row">
-              <ChangeImage setAvatarUrl={setAvatarUrl}>
+              {/* <ChangeImage setAvatarUrl={setAvatarUrl}>
                 <Button type="primary" ghost className="m-1">
                   編輯頭像
                 </Button>
-              </ChangeImage>
+              </ChangeImage> */}
             </div>
           </div>
         </Col>
@@ -76,8 +76,10 @@ const UserInfo = () => {
                 </p>
                 {record.map((v: ActionResponse, index) => {
                   const { place, distance, carType, oil, time } = v.action;
+                  const { timestamp } = v;
+                  const date = new Date(timestamp);
                   const spiltDistance = distance.split(" 公里");
-                  console.log({ spiltDistance });
+
                   return (
                     <Card key={index} className="my-1" title={place}>
                       <p>距離：{distance}</p>
@@ -85,10 +87,15 @@ const UserInfo = () => {
                       <p>使用車種：{carType}</p>
                       <p>
                         預估油錢：NT$
-                        {Number(Number(spiltDistance[0]) * Number(oil)).toFixed(
-                          0
+                        {formatToThousand(
+                          Number(
+                            Number(spiltDistance[0]) * Number(oil)
+                          ).toFixed(0)
                         )}
                         元
+                      </p>
+                      <p className="text-slate-500 text-xs">
+                        {date.toLocaleString()}
                       </p>
                     </Card>
                   );

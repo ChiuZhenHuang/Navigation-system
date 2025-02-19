@@ -266,12 +266,12 @@ function MyMapComponent({ userId, selectCarType }: Props) {
       {routeInfo && (
         <div className="mt-4 p-4 bg-gray-50 rounded-lg">
           <div className="flex justify-between items-center">
-            <div>
+            <div className="w-1/2">
               <p className="text-sm text-gray-600">
-                預估距離: {routeInfo.distance}
+                預估距離： {routeInfo.distance}
               </p>
               <p className="text-sm text-gray-600">
-                預估時間: {routeInfo.duration}
+                預估時間： {routeInfo.duration}
               </p>
             </div>
             <Button

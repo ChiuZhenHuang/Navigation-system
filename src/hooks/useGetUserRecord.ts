@@ -1,5 +1,5 @@
 import { getUserRecords } from "@/firebaseConfig";
-import { setUserEmail, setUserName } from "@/stores/userSlice";
+import { setUserEmail, setUserName, setFirstName } from "@/stores/userSlice";
 import { setTotalRecord } from "@/stores/recordSlice";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
@@ -15,8 +15,12 @@ export const useGetUserRecord = () => {
 
       if (res?.success) {
         console.log("res", res);
+
+        const firstName = res?.name ? String(res?.name).split("")[0] : "";
+
         dispatch(setUserEmail(res.email));
         dispatch(setUserName(res.name));
+        dispatch(setFirstName(firstName));
         dispatch(setTotalRecord(res.records));
       }
     } catch (error) {

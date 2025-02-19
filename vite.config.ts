@@ -11,4 +11,12 @@ export default defineConfig({
       "@": path.resolve(__dirname, "src"),
     },
   },
+  build: {
+    outDir: "dist", // Vercel 預設讀取 "dist"
+  },
+  server: {
+    fs: {
+      allow: ["."], // 允許訪問專案目錄，避免某些路由問題
+    },
+  },
 });
