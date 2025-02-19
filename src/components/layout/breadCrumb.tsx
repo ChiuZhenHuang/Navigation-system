@@ -6,7 +6,7 @@ import { HomeOutlined } from "@ant-design/icons";
 const breadcrumbMap: Record<string, string | JSX.Element> = {
   "/layout": <HomeOutlined />,
   "/layout/home": "導航",
-  "/layout/user-info": "個人資訊",
+  "/layout/task": "每周任務",
   "/layout/rank": "排行榜",
 };
 

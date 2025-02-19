@@ -1,4 +1,3 @@
-// import { useState } from "react";
 import UserImage from "../assets/images/frog.jpg";
 import {
   MenuFoldOutlined,
@@ -64,7 +63,7 @@ const LayoutComponent = () => {
         key: "2",
         icon: <VideoCameraOutlined />,
         label: "每周任務",
-        onClick: () => navigate("/layout/user-info"),
+        onClick: () => navigate("/layout/task"),
       },
       {
         key: "3",
@@ -88,7 +87,7 @@ const LayoutComponent = () => {
       {
         key: "2",
         label: "每周任務",
-        onClick: () => navigate("/layout/user-info"),
+        onClick: () => navigate("/layout/task"),
       },
       {
         key: "3",

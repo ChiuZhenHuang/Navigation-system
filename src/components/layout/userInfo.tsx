@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Row, Col } from "antd";
 import UserImage from "@/assets/images/frog.jpg";
 import ChangeImage from "./changeImage";
@@ -7,8 +7,6 @@ import { RootState } from "@/store";
 import Button from "@/components/ui/button";
 import Card from "@/components/ui/card";
 import type { ActionResponse } from "@/types/recordType";
-
-import { useEffect } from "react";
 import { useGetUserRecord } from "@/hooks/useGetUserRecord";
 import { getCookie } from "@/utils/getCookie";
 import { useNavigate } from "react-router-dom";
@@ -77,18 +75,35 @@ const UserInfo = () => {
                   導航紀錄
                 </p>
                 {record.map((v: ActionResponse, index) => {
-                  const { place, distance, carType, oil } = v.action;
+                  const { place, distance, carType, oil, time } = v.action;
+                  const spiltDistance = distance.split(" 公里");
+                  console.log({ spiltDistance });
                   return (
                     <Card key={index} className="my-1" title={place}>
-                      <p>距離：{distance}m</p>
+                      <p>距離：{distance}</p>
+                      <p>花費時間：{time}</p>
                       <p>使用車種：{carType}</p>
-                      <p>預估油錢：NT${Number(distance) * Number(oil)}</p>
+                      <p>
+                        預估油錢：NT$
+                        {Number(Number(spiltDistance[0]) * Number(oil)).toFixed(
+                          0
+                        )}
+                        元
+                      </p>
                     </Card>
                   );
                 })}
               </div>
             ) : (
-              <div>您尚未有導航紀錄！</div>
+              <>
+                <div>您尚未有導航紀錄！</div>
+                <Button
+                  className="bg-orange-100 my-2"
+                  onClick={() => navigate("/layout/home")}
+                >
+                  開始導航
+                </Button>
+              </>
             )}
           </div>
         </Col>

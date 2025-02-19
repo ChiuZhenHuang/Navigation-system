@@ -3,6 +3,7 @@ export interface Action {
   place: string; // 地點
   carType: string; // 車種
   oil: string; // 油耗
+  time: string;
 }
 
 export interface ActionResponse {
@@ -11,6 +12,7 @@ export interface ActionResponse {
     distance: string;
     carType: string;
     oil: string;
+    time: string;
     id?: string;
   };
 }

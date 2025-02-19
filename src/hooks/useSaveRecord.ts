@@ -12,6 +12,7 @@ export const useSaveRedcord = () => {
         place: action.place,
         carType: action.carType,
         oil: action.oil,
+        time: action.time,
       };
       const timestamp = Date.now();
       await saveUserRecord(id, getAction, timestamp);

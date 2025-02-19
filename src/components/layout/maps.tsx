@@ -10,6 +10,8 @@ import Card from "@/components/ui/card";
 import Input from "@/components/ui/input";
 import { MapPin, Navigation, Search } from "lucide-react";
 import type { InputRef } from "antd";
+import { useSearchCarType } from "@/hooks/useSearchCarType";
+import { useSaveRedcord } from "@/hooks/useSaveRecord";
 
 const containerStyle = {
   width: "100%",
@@ -33,7 +35,14 @@ interface RouteInfo {
 
 const libraries: "places"[] = ["places"];
 
-function MyMapComponent() {
+interface Props {
+  userId: string;
+  selectCarType: string;
+}
+
+function MyMapComponent({ userId, selectCarType }: Props) {
+  const { handSave, contextHolder } = useSaveRedcord();
+
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
     libraries,
@@ -114,11 +123,22 @@ function MyMapComponent() {
     );
   };
 
+  // 開始導航
   const startNavigation = () => {
     if (currentPosition && selectedPlace) {
       const url = `https://www.google.com/maps/dir/?api=1&origin=${currentPosition.lat},${currentPosition.lng}&destination=${selectedPlace.lat},${selectedPlace.lng}&travelmode=driving`;
       window.open(url, "_blank");
       setIsNavigating(true);
+
+      const selectedCar = useSearchCarType(selectCarType);
+
+      handSave(userId, {
+        place: searchInput,
+        distance: String(routeInfo?.distance),
+        time: String(routeInfo?.duration),
+        carType: selectedCar?.value ?? "未知車款",
+        oil: selectedCar?.oil ?? "未知",
+      });
     }
   };
 
@@ -186,6 +206,7 @@ function MyMapComponent() {
         <div className="relative">
           <Input
             ref={searchInputRef}
+            allowClear
             placeholder="搜尋目的地..."
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
@@ -264,6 +285,7 @@ function MyMapComponent() {
           </div>
         </div>
       )}
+      {contextHolder}
     </Card>
   );
 }
