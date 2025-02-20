@@ -10,6 +10,7 @@ import { useGetRegister } from "../hooks/useGetRegister";
 import Button from "@/components/ui/button";
 import Input from "@/components/ui/input";
 import type { RegisterData } from "@/types/userType";
+import NavigateImg from "@/assets/images/navigate.png";
 
 const RegisterPage = () => {
   const [form] = Form.useForm();
@@ -38,13 +39,19 @@ const RegisterPage = () => {
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
             requiredMark={false}
-            className="border border-slate-300 rounded-3xl bg-white shadow-lg p-6 max-w-md"
+            className="border border-slate-300 rounded-3xl bg-slate-50 shadow-lg p-6 max-w-md"
           >
-            <div className="flex justify-center font-bold text-2xl my-2 text-orange-600">
-              會員註冊
-            </div>
-            <div className="h-[100px] flex justify-center items-center">
-              圖片
+            <div className="flex flex-col justify-center items-center">
+              <div className="h-[80px] w-[80px] flex justify-center items-center">
+                <img
+                  src={NavigateImg}
+                  alt={NavigateImg}
+                  className="w-full h-full"
+                />
+              </div>
+              <div className="flex justify-center font-bold text-2xl my-2 mb-6 text-orange-600">
+                註冊會員
+              </div>
             </div>
             <Form.Item
               // label="使用者名稱"
@@ -61,7 +68,6 @@ const RegisterPage = () => {
                 className="rounded-xl p-2 hover:border-orange-500 border"
               />
             </Form.Item>
-
             <Form.Item
               // label="Email"
               name="email"
@@ -76,7 +82,6 @@ const RegisterPage = () => {
                 className="rounded-xl p-2 hover:border-orange-500 border"
               />
             </Form.Item>
-
             <Form.Item
               // label="密碼"
               name="password"
@@ -91,7 +96,6 @@ const RegisterPage = () => {
                 className="rounded-xl p-2 hover:border-orange-500 border"
               />
             </Form.Item>
-
             <Form.Item className="mt-14">
               <Button
                 type="primary"
@@ -107,7 +111,6 @@ const RegisterPage = () => {
                 確定註冊
               </Button>
             </Form.Item>
-
             <Button onClick={() => navigate("/login")} className="p-4">
               返回登入頁面
             </Button>

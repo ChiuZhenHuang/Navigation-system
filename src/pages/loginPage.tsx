@@ -5,6 +5,7 @@ import { useGetLogin } from "../hooks/useGetLogin";
 import Button from "@/components/ui/button";
 import Input from "@/components/ui/input";
 import type { LoginData } from "@/types/userType";
+import NavigateImg from "@/assets/images/navigate.png";
 
 const LoginPage = () => {
   const [form] = Form.useForm();
@@ -35,13 +36,22 @@ const LoginPage = () => {
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
             requiredMark={false}
-            className="border border-slate-300 rounded-3xl bg-white shadow-lg p-6 max-w-md"
+            className="border border-slate-300 rounded-3xl bg-slate-50 shadow-lg p-6 max-w-md"
           >
-            <div className="flex justify-center font-bold text-2xl my-2 text-orange-600">
-              會員登入
-            </div>
-            <div className="h-[100px] flex justify-center items-center">
-              圖片
+            <div className="flex flex-col justify-center items-center">
+              <div className="h-[80px] w-[80px] flex justify-center items-center">
+                <img
+                  src={NavigateImg}
+                  alt={NavigateImg}
+                  className="w-full h-full"
+                />
+              </div>
+              <div className="flex justify-center font-bold text-2xl my-2 text-orange-600">
+                歡迎使用導航紀錄系統
+              </div>
+              <div className="flex justify-center text-slate-400 my-2 mb-4">
+                請登入開始您的旅程
+              </div>
             </div>
             <Form.Item
               // label="Email"

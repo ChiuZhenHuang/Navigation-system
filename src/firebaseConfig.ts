@@ -87,38 +87,6 @@ export const loginUser = async (email: string, password: string) => {
     return { success: false, error };
   }
 };
-// 登入
-// export const loginUser = async (email: string, password: string) => {
-//   const auth = getAuth();
-//   try {
-//     const userCredential = await signInWithEmailAndPassword(
-//       auth,
-//       email,
-//       password
-//     );
-//     const firebaseUser = userCredential.user;
-
-//     const userSnapshot = await get(ref(db, "users/" + firebaseUser.uid));
-//     const userData = userSnapshot.val();
-
-//     // 讀取紀錄資料
-//     const userRecords = await getUserRecords(firebaseUser.uid);
-
-//     if (userData) {
-//       return {
-//         success: true,
-//         user: firebaseUser,
-//         userName: userData.name || null,
-//         userRecords: userRecords.success ? userRecords.records : [], // 返回紀錄資料
-//       };
-//     } else {
-//       return { success: false, error: "User data not found" };
-//     }
-//   } catch (error: any) {
-//     console.error("Error logging in:", error);
-//     return { success: false, error };
-//   }
-// };
 
 // 更新user資料
 // export const updateUserData = async (userId: string) => {
@@ -137,26 +105,67 @@ export const loginUser = async (email: string, password: string) => {
 // };
 
 // 讀取所有user資料
+interface UserRecord {
+  action: string;
+  timestamp: number;
+  [key: string]: any; // 為其他可能的欄位預留空間
+}
+
+interface User {
+  id: string;
+  name: string;
+  email: string;
+  records?: {
+    [key: string]: UserRecord;
+  };
+  [key: string]: any; // 為其他可能的欄位預留空間
+}
+
+interface UserWithRecordsArray extends Omit<User, "records"> {
+  records: (UserRecord & { id: string })[];
+}
+
 export const getUsersData = async () => {
   try {
     const snapshot = await get(ref(db, "users")); // 查詢users節點
     const usersObject = snapshot.val() || {};
-    const usersArray = Object.entries(usersObject).map(([key, value]) => {
-      if (typeof value === "object" && value !== null) {
-        return { ...value, id: key };
+
+    // 將每個使用者的資料轉換成陣列，包含其records
+    const usersArray = Object.entries(usersObject).map(
+      ([key, value]): UserWithRecordsArray => {
+        if (typeof value === "object" && value !== null) {
+          const userData = value as User;
+
+          // 處理 records 物件轉陣列
+          const records = userData.records
+            ? Object.entries(userData.records).map(
+                ([recordKey, recordValue]) => ({
+                  ...recordValue,
+                  id: recordKey,
+                })
+              )
+            : [];
+
+          // 回傳使用者資料，包含處理過的 records
+          return {
+            id: key,
+            name: userData.name,
+            email: userData.email,
+            records: records,
+          };
+        }
+        throw new Error("意外的資料格式");
       }
-      throw new Error("Unexpected data format");
-    });
+    );
+
     return { data: usersArray };
   } catch (error) {
-    console.error("Error reading data:", error);
+    console.error("讀取資料時發生錯誤:", error);
     throw error;
   }
 };
 
-// -----------------新增
 // 儲存使用者的操作紀錄
-
 export const saveUserRecord = async (
   userId: string,
   action: Action,
@@ -177,30 +186,6 @@ export const saveUserRecord = async (
 };
 
 // 讀取使用者紀錄
-// export const getUserRecords = async (userId: string) => {
-//   try {
-//     const snapshot = await get(ref(db, "users/" + userId + "/records"));
-//     const records = snapshot.val();
-
-//     if (records) {
-//       const recordsArray = Object.entries(records).map(([key, value]) => {
-//         // 加入類型檢查，確保 value 是 object 且不為 null
-//         if (typeof value === "object" && value !== null) {
-//           return { ...value, id: key };
-//         } else {
-//           throw new Error("Unexpected data format");
-//         }
-//       });
-//       return { success: true, records: recordsArray };
-//     } else {
-//       return { success: false, message: "No records found" };
-//     }
-//   } catch (error) {
-//     console.error("Error reading user records:", error);
-//     return { success: false, error };
-//   }
-// };
-
 export const getUserRecords = async (userId: string) => {
   try {
     // 讀取該使用者的完整資料（包含 userName, email, records）

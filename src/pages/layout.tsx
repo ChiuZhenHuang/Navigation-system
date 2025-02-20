@@ -18,6 +18,7 @@ import { useEffect, useState } from "react";
 import { useGetUserRecord } from "@/hooks/useGetUserRecord";
 import { getCookie } from "@/utils/getCookie";
 import Avatar from "@/components/ui/avatar";
+import { useGetUsersData } from "@/hooks/useGetUsersData";
 
 const { Header, Sider, Content } = Layout;
 
@@ -44,6 +45,12 @@ const LayoutComponent = () => {
   useEffect(() => {
     fetchUserRecord(userId);
   }, [userId]);
+
+  const { fetchUsersData } = useGetUsersData();
+
+  useEffect(() => {
+    fetchUsersData();
+  }, []);
 
   const logOutHandler = () => {
     document.cookie = "token=; max-age=0; path=/;";
