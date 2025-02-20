@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
 import { Row, Col } from "antd";
-// import UserImage from "@/assets/images/frog.jpg";
-// import ChangeImage from "./changeImage";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 import Button from "@/components/ui/button";
@@ -11,9 +9,9 @@ import { useGetUserRecord } from "@/hooks/useGetUserRecord";
 import { getCookie } from "@/utils/getCookie";
 import { useNavigate } from "react-router-dom";
 import { formatToThousand } from "@/utils/method";
+import Avatar from "@/components/ui/avatar";
 
 const UserInfo = () => {
-  // const [avatarUrl, setAvatarUrl] = useState(UserImage);
   const firsrName = useSelector((state: RootState) => state.user.firstName);
   const userName = useSelector((state: RootState) => state.user.userName);
   const record = useSelector((state: RootState) => state.record.totalRecord);
@@ -41,37 +39,23 @@ const UserInfo = () => {
     <>
       <Row justify="center" align="middle" className="m-4">
         <Col xs={24} sm={8} className="flex justify-center items-center">
-          {/* <div className="relative w-40 min-w-[115px] min-h-[115px] border-4 border-white">
-            <img
-              src={avatarUrl}
-              alt="UserImage"
-              className="object-cover w-full h-full"
-            />
-          </div> */}
-          <span className="relative w-[115px] h-[115px] border-4 bg-orange-50 border-black rounded-full object-cover text-xl flex justify-center items-center font-bold">
+          <Avatar size={100} className="border-4 border-white">
             {firsrName}
-          </span>
+          </Avatar>
         </Col>
         <Col xs={24} sm={16} className="flex justify-center items-center">
           <div className="w-full">
             <div className="flex justify-center mt-2">
               <p className="font-bold text-2xl">{userName}</p>
             </div>
-            <div className="flex flex-col justify-center items-center mt-2 sm:flex-row">
-              {/* <ChangeImage setAvatarUrl={setAvatarUrl}>
-                <Button type="primary" ghost className="m-1">
-                  編輯頭像
-                </Button>
-              </ChangeImage> */}
-            </div>
           </div>
         </Col>
-
         <Col xs={24} className="flex justify-center items-center">
           <div className="w-full mt-4 flex-1 max-h-[60vh]">
+            <div className="h-[2px] mb-4 bg-white w-full"></div>
             {record.length > 0 ? (
               <div>
-                <p className="my-2 flex text-center justify-center rounded-lg border border-slate-500 w-[80px] bg-[#FFE3BA]">
+                <p className="my-2 py-1 text-base flex text-center justify-center rounded-lg border-2 border-white w-[100px] text-white bg-slate-400">
                   導航紀錄
                 </p>
                 {record.map((v: ActionResponse, index) => {

@@ -17,6 +17,7 @@ import Button from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { useGetUserRecord } from "@/hooks/useGetUserRecord";
 import { getCookie } from "@/utils/getCookie";
+import Avatar from "@/components/ui/avatar";
 
 const { Header, Sider, Content } = Layout;
 
@@ -97,11 +98,6 @@ const LayoutComponent = () => {
       },
     ],
     userItems: [
-      // {
-      //   key: "1",
-      //   label: "首頁",
-      //   onClick: () => navigate("/layout/home"),
-      // },
       {
         key: "1",
         label: "個人資訊",
@@ -124,7 +120,6 @@ const LayoutComponent = () => {
         breakpoint="lg"
         collapsedWidth="0"
       >
-        {/* <div className="demo-logo-vertical" /> */}
         <Menu
           theme="dark"
           mode="inline"
@@ -162,16 +157,10 @@ const LayoutComponent = () => {
             placement="bottomRight"
             className="mx-3 cursor-pointer sm:block"
           >
-            {/* w-12 h-12 */}
-            <div className="w-[48px] h-[48px] border-2 border-white text-center rounded-full flex items-center justify-center overflow-hidden">
-              {/* <img
-                src={UserImage}
-                alt="UserImage"
-                className="object-cover w-full h-full"
-              /> */}
-              <span className="object-cover w-full h-full text-xl flex justify-center items-center">
+            <div className="w-[48px] h-[48px] border-2 border-white rounded-full flex items-center justify-center overflow-hidden">
+              <Avatar size={44} className="flex items-center justify-center">
                 {firsrName}
-              </span>
+              </Avatar>
             </div>
           </Dropdown>
         </Header>
@@ -179,7 +168,7 @@ const LayoutComponent = () => {
         <Content className="bg-orange-50 flex-1 overflow-hidden">
           <div className="w-full h-full overflow-hidden">
             <div className="max-w-full h-full whitespace-normal p-4 overflow-hidden">
-              <div className="flex flex-col h-full bg-white p-2 shadow-lg rounded-md overflow-hidden">
+              <div className="flex flex-col h-full bg-slate-100 p-2 shadow-lg rounded-md overflow-hidden">
                 <BreadCrumb />
                 {isLoading ? (
                   <div>loding...</div>

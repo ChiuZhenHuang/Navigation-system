@@ -23,11 +23,10 @@ export const useGetLogin = () => {
       const { email, password } = data;
       const res = await loginUser(email, password);
       if (res?.success && res?.user) {
-        console.log("1111", res);
+        // console.log("1111", res);
         const token = await res.user.getIdToken();
         const uid = res.user.uid;
 
-        console.log(uid);
         const tomorrow = new Date();
         tomorrow.setDate(tomorrow.getDate() + 1);
         document.cookie = `token=${token};expires=${tomorrow.toUTCString()}`;

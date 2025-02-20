@@ -8,6 +8,7 @@ const breadcrumbMap: Record<string, string | JSX.Element> = {
   "/layout/home": "導航",
   "/layout/task": "每周任務",
   "/layout/rank": "排行榜",
+  "/layout/user-info": "個人資訊",
 };
 
 const BreadCrumb = () => {
