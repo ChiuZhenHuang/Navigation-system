@@ -15,9 +15,6 @@ createRoot(document.getElementById("root")!).render(
           Layout: {
             siderBg: "rgb(255 ,247 ,237 )",
           },
-          Progress: {
-            circleTextFontSize: "24", // 文字大小
-          },
           Button: {
             defaultHoverBg: "transparent",
           },

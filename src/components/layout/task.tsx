@@ -124,7 +124,7 @@ const Task = () => {
   return (
     <div>
       <Row>
-        <Col xs={24} className="flex justify-center h-32 w-full">
+        <Col xs={24} className="flex justify-center h-32 w-full my-2">
           <Progress
             percent={finalPercent}
             type="dashboard"
@@ -132,8 +132,8 @@ const Task = () => {
             format={(percent) => {
               return (
                 <>
-                  <div>{`${percent}%`}</div>
-                  <div>完成進度</div>
+                  <div className="text-lg font-bold">{`${percent}%`}</div>
+                  <div className="text-base font-bold">完成進度</div>
                 </>
               );
             }}
@@ -190,26 +190,26 @@ const Task = () => {
               本週成就
             </div>
             <div className="flex flex-row items-center">
-              <div className="flex justify-center flex-1 p-2">
+              <div className="flex justify-center flex-1 p-1">
                 <div>
                   <div className="text-slate-500">完成任務</div>
-                  <div className="text-orange-300 font-bold text-xl">
+                  <div className="text-orange-300 font-bold text-lg">
                     {overachievedCount}/3
                   </div>
                 </div>
               </div>
-              <div className="flex justify-center flex-1 p-2">
+              <div className="flex justify-center flex-1 p-1">
                 <div>
                   <div className="text-slate-500">累計里程</div>
-                  <div className="text-orange-300 font-bold text-xl">
+                  <div className="text-orange-300 font-bold text-lg">
                     {totalRecord?.totalDistance} km
                   </div>
                 </div>
               </div>
-              <div className="flex justify-center flex-1 p-2">
+              <div className="flex justify-center flex-1 p-1">
                 <div>
                   <div className="text-slate-500">總任務積分</div>
-                  <div className="text-orange-300 font-bold text-xl flex justify-center items-center">
+                  <div className="text-orange-300 font-bold text-lg flex justify-center items-center">
                     <img src={CupIcon} alt="CupIcon" className="w-4 h-4 mr-1" />
                     {totalPoints}
                   </div>

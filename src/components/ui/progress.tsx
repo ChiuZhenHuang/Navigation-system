@@ -9,7 +9,7 @@ interface Props extends ProgressProps {
 const CustomProgress = forwardRef<HTMLDivElement, Props>(
   ({ className, children, ...props }: Props, ref) => {
     return (
-      <AntdProgress ref={ref} className={cn(className)} {...props} size="small">
+      <AntdProgress ref={ref} className={cn(className)} {...props}>
         {children}
       </AntdProgress>
     );
