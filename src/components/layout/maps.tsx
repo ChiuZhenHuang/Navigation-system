@@ -193,9 +193,10 @@ function MyMapComponent({ userId, selectCarType }: Props) {
       <div className="flex flex-col gap-4 mb-4">
         <div className="flex gap-4">
           <Button
-            onClick={getCurrentLocation}
-            disabled={isLocating}
+            block
             className="flex items-center gap-2"
+            disabled={isLocating}
+            onClick={getCurrentLocation}
           >
             <MapPin className="w-4 h-4" />
             {isLocating ? "定位中..." : "定位我的位置"}
@@ -215,7 +216,7 @@ function MyMapComponent({ userId, selectCarType }: Props) {
         </div>
       </div>
 
-      <div className="flex flex-col items-center w-full h-full sm:flex-row">
+      <div className="flex flex-col items-center w-full h-full md:flex-row">
         <GoogleMap
           mapContainerStyle={containerStyle}
           center={currentPosition || defaultCenter}
@@ -264,17 +265,18 @@ function MyMapComponent({ userId, selectCarType }: Props) {
         </GoogleMap>
 
         {routeInfo && (
-          <div className="p-4 rounded-lg w-full min-w-52 mt-2 sm:mt-0 sm:w-1/3 md:w-1/2">
-            <div className="flex flex-row justify-between items-center w-full h-full sm:flex-col">
-              <div className="w-full flex flex-col items-start mb-2 md:w-1/2">
-                <p className="text-sm text-center text-gray-600 w-full py-0 sm:py-2">
+          <div className="p-4 rounded-lg w-full min-w-52 mt-2 sm:mt-0 md:w-5/12">
+            <div className="flex flex-col justify-between items-start w-full h-full">
+              <div className="w-full flex flex-col items-start mb-2">
+                <p className="text-base text-start text-gray-600 w-full py-0 sm:py-2">
                   預估距離： {routeInfo.distance}
                 </p>
-                <p className="text-sm text-center text-gray-600 w-full py-0 sm:py-2">
+                <p className="text-base text-start text-gray-600 w-full py-0 sm:py-2">
                   預估時間： {routeInfo.duration}
                 </p>
               </div>
               <Button
+                block
                 onClick={startNavigation}
                 disabled={!selectedPlace || !currentPosition}
                 className="flex items-center gap-2"

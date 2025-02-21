@@ -12,10 +12,16 @@ const Button = forwardRef<HTMLButtonElement, Props>(
     return (
       <AntdButton
         ref={ref}
-        className={cn(className)}
+        className={cn(
+          "[&.ant-btn:hover]:bg-inherit", // 使用 !important 並指定具體的 antd class
+          "[&.ant-btn]:!transition-colors",
+          "[&.ant-btn]:duration-200",
+          className,
+          // 這會讓 hover 背景色跟隨你在 className 中設定的顏色
+          `[&.ant-btn]:has-[.bg-orange-300]:hover:!bg-orange-200`
+        )}
         shape="round"
         {...props}
-        block
       >
         {children}
       </AntdButton>

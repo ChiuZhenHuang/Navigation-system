@@ -98,6 +98,7 @@ const RegisterPage = () => {
             </Form.Item>
             <Form.Item className="mt-14">
               <Button
+                block
                 type="primary"
                 htmlType="submit"
                 className="p-4 bg-orange-400 transition-colors hover:bg-orange-500/100"
@@ -111,7 +112,7 @@ const RegisterPage = () => {
                 確定註冊
               </Button>
             </Form.Item>
-            <Button onClick={() => navigate("/login")} className="p-4">
+            <Button block onClick={() => navigate("/login")} className="p-4">
               返回登入頁面
             </Button>
           </Form>

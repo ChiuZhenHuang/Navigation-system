@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { useEffect, useState } from "react";
 import type { ActionResponse } from "@/types/recordType";
+import { formatToThousand } from "@/utils/method";
 
 interface TaskOptions {
   title: string;
@@ -161,7 +162,8 @@ const Task = () => {
                 <div className="flex justify-between">
                   <div className="font-bold my-2">{task.title}</div>
                   <div className="text-orange-400 font-bold my-2">
-                    {displayValue}/{task.target}
+                    {formatToThousand(displayValue)}/
+                    {formatToThousand(task.target)}
                     {task.title === "週累積里程"
                       ? "km"
                       : task.title === "週導航次數"
@@ -174,7 +176,7 @@ const Task = () => {
                   type="line"
                   strokeColor="#A1754D"
                 ></Progress>
-                <Button className="!w-[100px] mt-2 !bg-orange-600 text-white text-xs rounded-none transition-colors hover:!bg-none">
+                <Button className="w-2/5 mt-2 max-w-[180px] !bg-orange-600 text-white text-xs rounded-none transition-colors hover:!bg-none sm:1/4 md:1/6">
                   <img src={CupIcon} alt="CupIcon" className="w-4 h-4" />
                   {task.point} 積分
                 </Button>
@@ -185,7 +187,7 @@ const Task = () => {
 
         <Col className="w-full">
           <Card className="m-4 text-center flex flex-col bg-orange-100">
-            <div className="text-slate-600 font-bold text-lg flex justify-center items-center">
+            <div className="text-slate-600 font-bold text-lg flex justify-center items-center py-2">
               <img src={CrownIcon} alt="CrownIcon" className="w-5 h-5" />
               本週成就
             </div>

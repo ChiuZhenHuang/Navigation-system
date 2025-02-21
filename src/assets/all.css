@@ -14,7 +14,7 @@
 :where(.ant-btn).ant-btn-variant-dashed:not(:disabled):not(.ant-btn-disabled):hover {
   color: black !important;
   border-color: #d9d9d9 !important;
-  background: #ffffff !important;
+  background: transparent !important;
 }
 
 /* Google Maps 自動完成建議框樣式 */

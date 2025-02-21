@@ -1,11 +1,10 @@
-// import UserImage from "../assets/images/frog.jpg";
 import {
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
-  UploadOutlined,
+  ProfileOutlined,
   UserOutlined,
-  VideoCameraOutlined,
   LogoutOutlined,
+  TrophyOutlined,
+  RocketOutlined,
+  MenuOutlined,
 } from "@ant-design/icons";
 import BreadCrumb from "../components/layout/breadCrumb";
 import { Layout, Menu, message, Dropdown } from "antd";
@@ -64,24 +63,38 @@ const LayoutComponent = () => {
     siderItems: [
       {
         key: "1",
-        icon: <UserOutlined />,
+        icon: <RocketOutlined />,
         label: "導航",
-        onClick: () => navigate("/layout/home"),
+        onClick: () => {
+          setCollapsed(true), navigate("/layout/home");
+        },
       },
       {
         key: "2",
-        icon: <VideoCameraOutlined />,
+        icon: <ProfileOutlined />,
         label: "每週任務",
-        onClick: () => navigate("/layout/task"),
+        onClick: () => {
+          setCollapsed(true), navigate("/layout/task");
+        },
       },
       {
         key: "3",
-        icon: <UploadOutlined />,
+        icon: <TrophyOutlined />,
         label: "排行榜",
-        onClick: () => navigate("/layout/rank"),
+        onClick: () => {
+          setCollapsed(true), navigate("/layout/rank");
+        },
       },
       {
         key: "4",
+        icon: <UserOutlined />,
+        label: "個人資訊",
+        onClick: () => {
+          setCollapsed(true), navigate("/layout/user-info");
+        },
+      },
+      {
+        key: "5",
         icon: <LogoutOutlined />,
         label: "LogOut",
         onClick: logOutHandler,
@@ -90,28 +103,33 @@ const LayoutComponent = () => {
     navItems: [
       {
         key: "1",
-        label: "導航",
+        label: <div className="w-[55px] text-center">導航</div>,
         onClick: () => navigate("/layout/home"),
       },
       {
         key: "2",
-        label: "每週任務",
+        label: <div className="w-[55px] text-center">每週任務</div>,
         onClick: () => navigate("/layout/task"),
       },
       {
         key: "3",
-        label: "排行榜",
+        label: <div className="w-[55px] text-center">排行榜</div>,
         onClick: () => navigate("/layout/rank"),
+      },
+      {
+        key: "4",
+        label: <div className="w-[55px] text-center">個人資訊</div>,
+        onClick: () => navigate("/layout/user-info"),
       },
     ],
     userItems: [
+      // {
+      //   key: "1",
+      //   label: "個人資訊",
+      //   onClick: () => navigate("/layout/user-info"),
+      // },
       {
         key: "1",
-        label: "個人資訊",
-        onClick: () => navigate("/layout/user-info"),
-      },
-      {
-        key: "2",
         label: "登出",
         onClick: logOutHandler,
       },
@@ -121,18 +139,30 @@ const LayoutComponent = () => {
   return (
     <Layout className="h-screen">
       {contextHolder}
+
       <Sider
         trigger={null}
         collapsed={collapsed}
         breakpoint="lg"
         collapsedWidth="0"
+        className="fixed h-full z-50 bg-orange-50"
+        width="100%"
       >
+        <div className="py-2 flex justify-end">
+          <Button
+            type="text"
+            className="flex"
+            icon={<MenuOutlined />}
+            onClick={() => setCollapsed(true)}
+          />
+        </div>
+
         <Menu
           theme="light"
           mode="inline"
           defaultSelectedKeys={["1"]}
           onClick={(e) => {
-            if (e.key === "4") {
+            if (e.key === "5") {
               logOutHandler();
             }
           }}
@@ -144,7 +174,7 @@ const LayoutComponent = () => {
         <Header className="flex items-center justify-between px-0 bg-orange-50 font-bold border-b border-gray-300">
           <Button
             type="text"
-            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+            icon={<MenuOutlined />}
             onClick={() => setCollapsed(!collapsed)}
             className="flex sm:hidden"
           />

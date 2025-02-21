@@ -87,6 +87,7 @@ const LoginPage = () => {
               <Button
                 type="primary"
                 htmlType="submit"
+                block
                 className="p-4 bg-orange-400 transition-colors hover:bg-orange-500/100"
               >
                 {loading && (
@@ -100,6 +101,7 @@ const LoginPage = () => {
             </Form.Item>
 
             <Button
+              block
               onClick={() => navigate("/register")}
               className="p-4 bg-white transition-colors !hover:text-orange-100"
             >
