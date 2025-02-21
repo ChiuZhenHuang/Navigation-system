@@ -15,7 +15,7 @@ import { useSaveRedcord } from "@/hooks/useSaveRecord";
 
 const containerStyle = {
   width: "100%",
-  height: "400px",
+  height: "500px",
 };
 
 const defaultCenter = {
@@ -131,7 +131,6 @@ function MyMapComponent({ userId, selectCarType }: Props) {
       setIsNavigating(true);
 
       const selectedCar = useSearchCarType(selectCarType);
-
       handSave(userId, {
         place: searchInput,
         distance: String(routeInfo?.distance),
@@ -216,75 +215,77 @@ function MyMapComponent({ userId, selectCarType }: Props) {
         </div>
       </div>
 
-      <GoogleMap
-        mapContainerStyle={containerStyle}
-        center={currentPosition || defaultCenter}
-        zoom={14}
-        onLoad={onLoad}
-        onUnmount={onUnmount}
-        options={{
-          zoomControl: true,
-          streetViewControl: false,
-          mapTypeControl: false,
-          fullscreenControl: false,
-        }}
-      >
-        {!directions && currentPosition && (
-          <Marker
-            position={currentPosition}
-            icon={{
-              url: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiMwMDAwZmYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIxMCIvPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiLz48L3N2Zz4=",
-              scaledSize: new google.maps.Size(30, 30),
-            }}
-          />
-        )}
+      <div className="flex flex-col items-center w-full h-full sm:flex-row">
+        <GoogleMap
+          mapContainerStyle={containerStyle}
+          center={currentPosition || defaultCenter}
+          zoom={14}
+          onLoad={onLoad}
+          onUnmount={onUnmount}
+          options={{
+            zoomControl: true,
+            streetViewControl: false,
+            mapTypeControl: false,
+            fullscreenControl: false,
+          }}
+        >
+          {!directions && currentPosition && (
+            <Marker
+              position={currentPosition}
+              icon={{
+                url: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiMwMDAwZmYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIxMCIvPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiLz48L3N2Zz4=",
+                scaledSize: new google.maps.Size(30, 30),
+              }}
+            />
+          )}
 
-        {!directions && selectedPlace && (
-          <Marker
-            position={selectedPlace}
-            icon={{
-              url: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZjAwMDAiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMjEgMTBjMCA3LTkgMTMtOSAxM3MtOS02LTktMTNhOSA5IDAgMCAxIDE4IDB6Ii8+PGNpcmNsZSBjeD0iMTIiIGN5PSIxMCIgcj0iMyIvPjwvc3ZnPg==",
-              scaledSize: new google.maps.Size(30, 30),
-            }}
-          />
-        )}
+          {!directions && selectedPlace && (
+            <Marker
+              position={selectedPlace}
+              icon={{
+                url: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZjAwMDAiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMjEgMTBjMCA3LTkgMTMtOSAxM3MtOS02LTktMTNhOSA5IDAgMCAxIDE4IDB6Ii8+PGNpcmNsZSBjeD0iMTIiIGN5PSIxMCIgcj0iMyIvPjwvc3ZnPg==",
+                scaledSize: new google.maps.Size(30, 30),
+              }}
+            />
+          )}
 
-        {directions && (
-          <DirectionsRenderer
-            directions={directions}
-            options={{
-              suppressMarkers: false,
-              polylineOptions: {
-                strokeColor: "#4A90E2",
-                strokeWeight: 5,
-              },
-            }}
-          />
-        )}
-      </GoogleMap>
+          {directions && (
+            <DirectionsRenderer
+              directions={directions}
+              options={{
+                suppressMarkers: false,
+                polylineOptions: {
+                  strokeColor: "#4A90E2",
+                  strokeWeight: 5,
+                },
+              }}
+            />
+          )}
+        </GoogleMap>
 
-      {routeInfo && (
-        <div className="mt-4 p-4 bg-gray-50 rounded-lg">
-          <div className="flex flex-col justify-between items-center  md:flex-row">
-            <div className="w-full flex flex-col items-start mb-2 md:w-1/2">
-              <p className="text-sm text-gray-600">
-                預估距離： {routeInfo.distance}
-              </p>
-              <p className="text-sm text-gray-600">
-                預估時間： {routeInfo.duration}
-              </p>
+        {routeInfo && (
+          <div className="p-4 rounded-lg w-full min-w-52 mt-2 sm:mt-0 sm:w-1/3 md:w-1/2">
+            <div className="flex flex-row justify-between items-center w-full h-full sm:flex-col">
+              <div className="w-full flex flex-col items-start mb-2 md:w-1/2">
+                <p className="text-sm text-center text-gray-600 w-full py-0 sm:py-2">
+                  預估距離： {routeInfo.distance}
+                </p>
+                <p className="text-sm text-center text-gray-600 w-full py-0 sm:py-2">
+                  預估時間： {routeInfo.duration}
+                </p>
+              </div>
+              <Button
+                onClick={startNavigation}
+                disabled={!selectedPlace || !currentPosition}
+                className="flex items-center gap-2"
+              >
+                <Navigation className="w-4 h-4" />
+                {isNavigating ? "導航中" : "開始導航"}
+              </Button>
             </div>
-            <Button
-              onClick={startNavigation}
-              disabled={!selectedPlace || !currentPosition}
-              className="flex items-center gap-2"
-            >
-              <Navigation className="w-4 h-4" />
-              {isNavigating ? "導航中" : " 開始導航"}
-            </Button>
           </div>
-        </div>
-      )}
+        )}
+      </div>
       {contextHolder}
     </Card>
   );

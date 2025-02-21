@@ -16,7 +16,7 @@ import type { RootState } from "../store";
 import Button from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { useGetUserRecord } from "@/hooks/useGetUserRecord";
-import { getCookie } from "@/utils/getCookie";
+import { getCookie } from "@/utils/method";
 import Avatar from "@/components/ui/avatar";
 import { useGetUsersData } from "@/hooks/useGetUsersData";
 
@@ -71,7 +71,7 @@ const LayoutComponent = () => {
       {
         key: "2",
         icon: <VideoCameraOutlined />,
-        label: "每周任務",
+        label: "每週任務",
         onClick: () => navigate("/layout/task"),
       },
       {
@@ -95,7 +95,7 @@ const LayoutComponent = () => {
       },
       {
         key: "2",
-        label: "每周任務",
+        label: "每週任務",
         onClick: () => navigate("/layout/task"),
       },
       {
@@ -128,7 +128,7 @@ const LayoutComponent = () => {
         collapsedWidth="0"
       >
         <Menu
-          theme="dark"
+          theme="light"
           mode="inline"
           defaultSelectedKeys={["1"]}
           onClick={(e) => {
@@ -175,7 +175,7 @@ const LayoutComponent = () => {
         <Content className="bg-orange-50 flex-1 overflow-hidden">
           <div className="w-full h-full overflow-hidden">
             <div className="max-w-full h-full whitespace-normal p-4 overflow-hidden">
-              <div className="flex flex-col h-full bg-slate-100 p-2 shadow-lg rounded-md overflow-hidden">
+              <div className="flex flex-col h-full border bg-white p-2 shadow-lg rounded-md overflow-hidden">
                 <BreadCrumb />
                 {isLoading ? (
                   <div>loding...</div>

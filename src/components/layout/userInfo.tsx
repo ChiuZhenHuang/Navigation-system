@@ -6,7 +6,7 @@ import Button from "@/components/ui/button";
 import Card from "@/components/ui/card";
 import type { ActionResponse } from "@/types/recordType";
 import { useGetUserRecord } from "@/hooks/useGetUserRecord";
-import { getCookie } from "@/utils/getCookie";
+import { getCookie } from "@/utils/method";
 import { useNavigate } from "react-router-dom";
 import { formatToThousand } from "@/utils/method";
 import Avatar from "@/components/ui/avatar";
@@ -40,7 +40,7 @@ const UserInfo = () => {
       <Row justify="center" align="middle" className="m-4">
         <Col xs={24} sm={8} className="flex justify-center items-center">
           <Avatar size={100} className="border-4 border-white">
-            {firsrName}
+            <div className=" text-4xl">{firsrName}</div>
           </Avatar>
         </Col>
         <Col xs={24} sm={16} className="flex justify-center items-center">
@@ -55,7 +55,7 @@ const UserInfo = () => {
             <div className="h-[2px] mb-4 bg-white w-full"></div>
             {record.length > 0 ? (
               <div>
-                <p className="my-2 py-1 text-base flex text-center justify-center rounded-lg border-2 border-white w-[100px] text-white bg-slate-400">
+                <p className="my-2 py-1 text-base flex text-center justify-center rounded-lg border-2 border-white w-[100px] text-white bg-[#A1754D]">
                   導航紀錄
                 </p>
                 {record.map((v: ActionResponse, index) => {

@@ -15,5 +15,6 @@ export interface ActionResponse {
     time: string;
     id?: string;
   };
-  timestamp: string;
+  timestamp: number;
+  id: string;
 }

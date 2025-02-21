@@ -2,20 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
-:where(.css-dev-only-do-not-override-1l95oj8).ant-btn-variant-solid:not(
-    :disabled
-  ):not(.ant-btn-disabled):hover {
-  background: orange;
-  color: #fff;
-}
+// :where(.css-dev-only-do-not-override-1l95oj8).ant-btn-variant-solid:not(
+//     :disabled
+//   ):not(.ant-btn-disabled):hover {
+//   background: orange;
+//   color: #fff;
+// }
 
-:where(.css-dev-only-do-not-override-1l95oj8).ant-btn-variant-outlined:not(
-    :disabled
-  ):not(.ant-btn-disabled):hover,
-:where(.css-dev-only-do-not-override-1l95oj8).ant-btn-variant-dashed:not(
-    :disabled
-  ):not(.ant-btn-disabled):hover {
-  color: black;
-  border-color: #d9d9d9;
-  background: #ffffff;
-}
+// :where(.css-dev-only-do-not-override-1l95oj8).ant-btn-variant-outlined:not(
+//     :disabled
+//   ):not(.ant-btn-disabled):hover,
+// :where(.css-dev-only-do-not-override-1l95oj8).ant-btn-variant-dashed:not(
+//     :disabled
+//   ):not(.ant-btn-disabled):hover {
+//   color: black;
+//   border-color: #d9d9d9;
+//   background: #ffffff;
+// }

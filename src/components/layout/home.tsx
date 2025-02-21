@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 import Select from "@/components/ui/select";
 import { useEffect, useState } from "react";
-import { getCookie } from "@/utils/getCookie";
+import { getCookie } from "@/utils/method";
 import Maps from "@/components/layout/maps";
 import { carTypes } from "@/utils/carTypeConfig";
 

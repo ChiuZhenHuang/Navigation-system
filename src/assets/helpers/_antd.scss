@@ -1,0 +1,21 @@
+.ant-btn-variant-solid:not(:disabled):not(.ant-btn-disabled):hover,
+:where(.ant-btn).ant-btn-variant-solid:not(:disabled):not(
+    .ant-btn-disabled
+  ):hover {
+  background: orange !important;
+  color: #fff !important;
+}
+
+// Outlined/Dashed Button hover
+.ant-btn-variant-outlined:not(:disabled):not(.ant-btn-disabled):hover,
+.ant-btn-variant-dashed:not(:disabled):not(.ant-btn-disabled):hover,
+:where(.ant-btn).ant-btn-variant-outlined:not(:disabled):not(
+    .ant-btn-disabled
+  ):hover,
+:where(.ant-btn).ant-btn-variant-dashed:not(:disabled):not(
+    .ant-btn-disabled
+  ):hover {
+  color: black !important;
+  border-color: #d9d9d9 !important;
+  background: #ffffff !important;
+}
