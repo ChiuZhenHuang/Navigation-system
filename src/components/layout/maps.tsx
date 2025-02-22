@@ -12,7 +12,8 @@ import { MapPin, Navigation, Search } from "lucide-react";
 import type { InputRef } from "antd";
 import { useSearchCarType } from "@/hooks/useSearchCarType";
 import { useSaveRedcord } from "@/hooks/useSaveRecord";
-
+import { useGetUserRecord } from "@/hooks/useGetUserRecord";
+import { useGetUsersData } from "@/hooks/useGetUsersData";
 const containerStyle = {
   width: "100%",
   height: "500px",
@@ -42,7 +43,8 @@ interface Props {
 
 function MyMapComponent({ userId, selectCarType }: Props) {
   const { handSave, contextHolder } = useSaveRedcord();
-
+  const { fetchUserRecord } = useGetUserRecord();
+  const { fetchUsersData } = useGetUsersData();
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
     libraries,
@@ -131,6 +133,7 @@ function MyMapComponent({ userId, selectCarType }: Props) {
       setIsNavigating(true);
 
       const selectedCar = useSearchCarType(selectCarType);
+      //儲存使用者資訊
       handSave(userId, {
         place: searchInput,
         distance: String(routeInfo?.distance),
@@ -138,6 +141,9 @@ function MyMapComponent({ userId, selectCarType }: Props) {
         carType: selectedCar?.value ?? "未知車款",
         oil: selectedCar?.oil ?? "未知",
       });
+      //重新再抓取使用者資訊
+      fetchUserRecord(userId);
+      fetchUsersData();
     }
   };
 

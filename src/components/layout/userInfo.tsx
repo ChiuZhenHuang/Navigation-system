@@ -1,11 +1,10 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { Row, Col } from "antd";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 import Button from "@/components/ui/button";
 import Card from "@/components/ui/card";
 import type { ActionResponse } from "@/types/recordType";
-import { useGetUserRecord } from "@/hooks/useGetUserRecord";
 import { getCookie } from "@/utils/method";
 import { useNavigate } from "react-router-dom";
 import { formatToThousand } from "@/utils/method";
@@ -16,25 +15,15 @@ const UserInfo = () => {
   const userName = useSelector((state: RootState) => state.user.userName);
   const record = useSelector((state: RootState) => state.record.totalRecord);
 
-  const [userId, setUserId] = useState("");
-  const { fetchUserRecord } = useGetUserRecord();
   const navigate = useNavigate();
 
   useEffect(() => {
-    const retrievedUid = getCookie("uid") ?? "";
     const retrievedToken = getCookie("token") ?? "";
-    setUserId(retrievedUid);
-
     if (!retrievedToken) {
       navigate("/login");
     }
   }, [navigate]);
 
-  useEffect(() => {
-    fetchUserRecord(userId);
-  }, [userId]);
-
-  // 這一頁要再重新抓取api資訊
   return (
     <>
       <Row justify="center" align="middle" className="m-4">

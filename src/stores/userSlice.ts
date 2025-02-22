@@ -6,6 +6,7 @@ const initialState = {
   userName: "",
   userId: "",
   firstName: "",
+  userTotalData: [],
 };
 
 const userSlice = createSlice({
@@ -30,6 +31,9 @@ const userSlice = createSlice({
     setFirstName(state, action) {
       state.firstName = action.payload;
     },
+    setUserTotalData(state, action) {
+      state.userTotalData = action.payload;
+    },
   },
 });
 
@@ -40,5 +44,6 @@ export const {
   setUserName,
   setUserId,
   setFirstName,
+  setUserTotalData,
 } = userSlice.actions;
 export default userSlice.reducer;

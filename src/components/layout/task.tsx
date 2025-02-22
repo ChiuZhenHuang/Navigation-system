@@ -7,28 +7,18 @@ import CupIcon from "@/assets/images/cup.png";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { useEffect, useState } from "react";
-import type { ActionResponse } from "@/types/recordType";
-import { formatToThousand } from "@/utils/method";
-
-interface TaskOptions {
-  title: string;
-  target: string;
-  point: string;
-}
-
-interface TotalRecord {
-  totalDistance: string;
-  totalOil: string;
-  frequency: number;
-}
+import type {
+  ActionResponse,
+  TaskOptions,
+  TotalRecord,
+} from "@/types/recordType";
+import {
+  formatToThousand,
+  calculateTotalPoints,
+  taskOptions,
+} from "@/utils/method";
 
 const Task = () => {
-  const taskOptions = [
-    { title: "週累積里程", target: "1000", point: "1000" },
-    { title: "週導航次數", target: "5", point: "500" },
-    { title: "週油耗總計", target: "2000", point: "700" },
-  ];
-
   const userRecords = useSelector(
     (state: RootState) => state.record.totalRecord
   );
@@ -50,14 +40,14 @@ const Task = () => {
 
       return {
         totalDistance,
-        frequency: userRecords.length,
+        toalCount: userRecords.length,
         totalOil,
       };
     });
 
     // 計算加總
     const totalSummary = transformedRecords.reduce(
-      (acc, record: any) => {
+      (acc, record) => {
         acc.totalDistance += record.totalDistance;
         acc.totalOil += record.totalOil;
         return acc;
@@ -68,10 +58,10 @@ const Task = () => {
     // 將加總數據放入 transformedRecords
     const finalRecords = {
       totalDistance: totalSummary.totalDistance.toFixed(1),
-      totalOil: totalSummary.totalOil.toFixed(0), // 總油耗
-      frequency: userRecords.length, // 頻率維持不變
+      totalOil: totalSummary.totalOil.toFixed(0),
+      toalCount: userRecords.length,
     };
-    console.log({ finalRecords });
+    // console.log({ finalRecords });
     setTotalRecord(finalRecords);
   }, [userRecords]);
 
@@ -79,13 +69,14 @@ const Task = () => {
   useEffect(() => {
     if (!totalRecord) return;
 
+    console.log("11", totalRecord);
     // 取得對應的數值
     const totalDistance = Math.min(
       Number(totalRecord.totalDistance),
       Number(taskOptions[0].target)
     );
-    const totalFrequency = Math.min(
-      Number(totalRecord.frequency),
+    const totalCount = Math.min(
+      Number(totalRecord.toalCount),
       Number(taskOptions[1].target)
     );
     const totalOil = Math.min(
@@ -93,29 +84,25 @@ const Task = () => {
       Number(taskOptions[2].target)
     );
 
-    // 計算百分比
-    const percentDistance =
-      (totalDistance / Number(taskOptions[0].target)) * 100;
-    const percentFrequency =
-      (totalFrequency / Number(taskOptions[1].target)) * 100;
-    const percentOil = (totalOil / Number(taskOptions[2].target)) * 100;
-
-    // 計算有幾個超過 100%
-    const overachievedCount = [
+    /**
+     * @param totalPoints 總任務積分
+     * @param overachievedCount 幾項任務達成(超過100%)
+     * @param percentDistance 里程達成百分比
+     * @param percentCount 次數達成百分比
+     * @param percentOil 油費達成百分比
+     *
+     */
+    const {
+      totalPoints,
+      overachievedCount,
       percentDistance,
-      percentFrequency,
+      percentCount,
       percentOil,
-    ].filter((percent) => percent >= 100).length;
-
-    // 計算總任務積分
-    const totalPoints =
-      (percentDistance >= 100 ? Number(taskOptions[0].point) : 0) +
-      (percentFrequency >= 100 ? Number(taskOptions[1].point) : 0) +
-      (percentOil >= 100 ? Number(taskOptions[2].point) : 0);
+    } = calculateTotalPoints(totalDistance, totalCount, totalOil);
 
     // 計算最終平均百分比
     const averagePercent = Math.floor(
-      (percentDistance + percentFrequency + percentOil) / 3
+      (percentDistance + percentCount + percentOil) / 3
     );
     setTotalPoints(totalPoints);
     setOverachievedCount(overachievedCount);
@@ -146,7 +133,7 @@ const Task = () => {
         {taskOptions.map((task: TaskOptions, index) => {
           const taskValues = {
             週累積里程: Number(totalRecord?.totalDistance) || 0,
-            週導航次數: Number(totalRecord?.frequency) || 0,
+            週導航次數: Number(totalRecord?.toalCount) || 0,
             週油耗總計: Number(totalRecord?.totalOil) || 0,
           } as const; // 讓 TypeScript 知道這些 key 是固定字串
 
@@ -178,7 +165,7 @@ const Task = () => {
                 ></Progress>
                 <Button className="w-2/5 mt-2 max-w-[180px] !bg-orange-600 text-white text-xs rounded-none transition-colors hover:!bg-none sm:1/4 md:1/6">
                   <img src={CupIcon} alt="CupIcon" className="w-4 h-4" />
-                  {task.point} 積分
+                  {formatToThousand(task.point)} 積分
                 </Button>
               </Card>
             </Col>
@@ -213,7 +200,7 @@ const Task = () => {
                   <div className="text-slate-500">總任務積分</div>
                   <div className="text-orange-300 font-bold text-lg flex justify-center items-center">
                     <img src={CupIcon} alt="CupIcon" className="w-4 h-4 mr-1" />
-                    {totalPoints}
+                    {formatToThousand(totalPoints)}
                   </div>
                 </div>
               </div>
