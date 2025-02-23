@@ -102,8 +102,8 @@ const Rank = () => {
       };
     });
 
-    console.log("去除不必要的字串後", newData);
-    setNameData(newData); // ✅ 設定新資料
+    // console.log("去除不必要的字串後", newData);
+    setNameData(newData); //  設定新資料
   }, [userTotalData]);
 
   useEffect(() => {

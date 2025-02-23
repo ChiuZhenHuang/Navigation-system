@@ -69,7 +69,7 @@ const Task = () => {
   useEffect(() => {
     if (!totalRecord) return;
 
-    console.log("11", totalRecord);
+    // console.log("11", totalRecord);
     // 取得對應的數值
     const totalDistance = Math.min(
       Number(totalRecord.totalDistance),

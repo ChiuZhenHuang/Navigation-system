@@ -15,7 +15,7 @@ const Home = () => {
     setUserId(retrievedUid);
   }, []);
 
-  const [selectCarType, setSelectCarType] = useState("BMW X5");
+  const [selectCarType, setSelectCarType] = useState("Toyota Corolla");
 
   return (
     <div className="p-4">
