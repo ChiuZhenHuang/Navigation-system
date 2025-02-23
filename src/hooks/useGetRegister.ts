@@ -15,7 +15,7 @@ export const useGetRegister = () => {
       const { name, email, password } = data;
       const res = await registerUser(name, email, password);
       if (res.success && res.user) {
-        console.log("註冊成功資料", res);
+        // console.log("註冊成功資料", res);
         message.success("註冊成功");
         navigate("/login");
       } else {

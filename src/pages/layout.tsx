@@ -26,7 +26,7 @@ const LayoutComponent = () => {
   const navigate = useNavigate();
   const [collapsed, setCollapsed] = useState(true);
   const [messageApi, contextHolder] = message.useMessage();
-
+  const [selectedKey, setSelectedKey] = useState("1"); // 追蹤選中狀態
   const [userId, setUserId] = useState("");
   const { fetchUserRecord, isLoading } = useGetUserRecord();
 
@@ -66,7 +66,7 @@ const LayoutComponent = () => {
         icon: <RocketOutlined />,
         label: "導航",
         onClick: () => {
-          setCollapsed(true), navigate("/layout/home");
+          setCollapsed(true), setSelectedKey("1"), navigate("/layout/home");
         },
       },
       {
@@ -74,7 +74,7 @@ const LayoutComponent = () => {
         icon: <ProfileOutlined />,
         label: "每週任務",
         onClick: () => {
-          setCollapsed(true), navigate("/layout/task");
+          setCollapsed(true), setSelectedKey("2"), navigate("/layout/task");
         },
       },
       {
@@ -82,7 +82,7 @@ const LayoutComponent = () => {
         icon: <TrophyOutlined />,
         label: "排行榜",
         onClick: () => {
-          setCollapsed(true), navigate("/layout/rank");
+          setCollapsed(true), setSelectedKey("3"), navigate("/layout/rank");
         },
       },
       {
@@ -90,7 +90,9 @@ const LayoutComponent = () => {
         icon: <UserOutlined />,
         label: "個人資訊",
         onClick: () => {
-          setCollapsed(true), navigate("/layout/user-info");
+          setCollapsed(true),
+            setSelectedKey("4"),
+            navigate("/layout/user-info");
         },
       },
       {
@@ -104,22 +106,30 @@ const LayoutComponent = () => {
       {
         key: "1",
         label: <div className="w-[55px] text-center">導航</div>,
-        onClick: () => navigate("/layout/home"),
+        onClick: () => {
+          setSelectedKey("1"), navigate("/layout/home");
+        },
       },
       {
         key: "2",
         label: <div className="w-[55px] text-center">每週任務</div>,
-        onClick: () => navigate("/layout/task"),
+        onClick: () => {
+          setSelectedKey("2"), navigate("/layout/task");
+        },
       },
       {
         key: "3",
         label: <div className="w-[55px] text-center">排行榜</div>,
-        onClick: () => navigate("/layout/rank"),
+        onClick: () => {
+          setSelectedKey("3"), navigate("/layout/rank");
+        },
       },
       {
         key: "4",
         label: <div className="w-[55px] text-center">個人資訊</div>,
-        onClick: () => navigate("/layout/user-info"),
+        onClick: () => {
+          setSelectedKey("4"), navigate("/layout/user-info");
+        },
       },
     ],
     userItems: [
@@ -161,11 +171,7 @@ const LayoutComponent = () => {
           theme="light"
           mode="inline"
           defaultSelectedKeys={["1"]}
-          onClick={(e) => {
-            if (e.key === "5") {
-              logOutHandler();
-            }
-          }}
+          selectedKeys={[selectedKey]}
           items={items.siderItems}
         />
       </Sider>
@@ -183,6 +189,7 @@ const LayoutComponent = () => {
             mode="horizontal"
             theme="light"
             defaultSelectedKeys={["1"]}
+            selectedKeys={[selectedKey]}
             className="flex-1 mx-4 justify-end bg-transparent sticky hidden border-0 sm:flex"
             items={items.navItems}
           />
@@ -206,7 +213,7 @@ const LayoutComponent = () => {
           <div className="w-full h-full overflow-hidden">
             <div className="max-w-full h-full whitespace-normal p-4 overflow-hidden">
               <div className="flex flex-col h-full border bg-white p-2 shadow-lg rounded-md overflow-hidden">
-                <BreadCrumb />
+                <BreadCrumb setSelectedKey={setSelectedKey} />
                 {isLoading ? (
                   <div>loding...</div>
                 ) : (

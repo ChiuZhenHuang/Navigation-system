@@ -41,12 +41,15 @@ const UserInfo = () => {
         </Col>
         <Col xs={24} className="flex justify-center items-center">
           <div className="w-full mt-4 flex-1 max-h-[60vh]">
-            <div className="h-[2px] mb-4 bg-white w-full"></div>
+            <div className="h-[2px] mb-4 bg-slate-200 w-full"></div>
+            <p className="my-2 py-1 text-base flex text-center justify-center rounded-lg border-2 border-white w-[100px] text-white bg-[#A1754D]">
+              導航紀錄
+            </p>
             {record.length > 0 ? (
               <div>
-                <p className="my-2 py-1 text-base flex text-center justify-center rounded-lg border-2 border-white w-[100px] text-white bg-[#A1754D]">
+                {/* <p className="my-2 py-1 text-base flex text-center justify-center rounded-lg border-2 border-white w-[100px] text-white bg-[#A1754D]">
                   導航紀錄
-                </p>
+                </p> */}
                 {record.map((v: ActionResponse, index) => {
                   const { place, distance, carType, oil, time } = v.action;
                   const { timestamp } = v;
@@ -78,6 +81,7 @@ const UserInfo = () => {
               <>
                 <div>您尚未有導航紀錄！</div>
                 <Button
+                  block
                   className="bg-orange-100 my-2"
                   onClick={() => navigate("/layout/home")}
                 >

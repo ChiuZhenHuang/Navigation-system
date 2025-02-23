@@ -32,7 +32,6 @@ export const useGetLogin = () => {
         document.cookie = `token=${token};expires=${tomorrow.toUTCString()}`;
         document.cookie = `uid=${uid};expires=${tomorrow.toUTCString()}`;
 
-        console.log(`email:${res.user.email} , name:${res.userName}`);
         // dispatch(setUserEmail(res.user.email));
         // dispatch(setUserName(res.userName));
         dispatch(setUserId(res.user.uid));

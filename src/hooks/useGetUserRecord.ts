@@ -14,7 +14,7 @@ export const useGetUserRecord = () => {
       const res = await getUserRecords(id);
 
       if (res?.success) {
-        console.log("res", res);
+        // console.log("res", res);
 
         const firstName = res?.name ? String(res?.name).split("")[0] : "";
 
