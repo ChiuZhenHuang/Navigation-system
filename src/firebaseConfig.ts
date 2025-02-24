@@ -3,7 +3,7 @@ import {
   getDatabase,
   ref,
   set,
-  // update
+  update,
   // child,
   get,
   push,
@@ -13,7 +13,8 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import type { Action } from "./types/recordType";
+import { UserRecord, User, Action } from "@/types/firebaseType";
+import type { CarTypes } from "@/types/carTypes";
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -104,23 +105,6 @@ export const loginUser = async (email: string, password: string) => {
 //   }
 // };
 
-// 讀取所有user資料
-interface UserRecord {
-  action: string;
-  timestamp: number;
-  [key: string]: any; // 為其他可能的欄位預留空間
-}
-
-interface User {
-  id: string;
-  name: string;
-  email: string;
-  records?: {
-    [key: string]: UserRecord;
-  };
-  [key: string]: any; // 為其他可能的欄位預留空間
-}
-
 interface UserWithRecordsArray extends Omit<User, "records"> {
   records: (UserRecord & { id: string })[];
 }
@@ -179,7 +163,6 @@ export const saveUserRecord = async (
       timestamp,
     };
     await set(newRecordRef, recordData); // 儲存資料到 Firebase
-    console.log("Record saved successfully!");
   } catch (error) {
     console.error("Error saving user record:", error);
   }
@@ -218,6 +201,55 @@ export const getUserRecords = async (userId: string) => {
     }
   } catch (error) {
     console.error("Error reading user records:", error);
+    return { success: false, error };
+  }
+};
+
+// 新增carTypes
+export const addCarTypes = async (carType: string, oil: string) => {
+  try {
+    const cartTypeData = {
+      carType,
+      oil,
+    };
+    await set(ref(db, "carTypes/" + carType), cartTypeData);
+    return { success: true, cartTypeData };
+  } catch (error) {
+    console.error(error);
+    return { success: false, error };
+  }
+};
+
+// 取得所有carTypes
+export const getCarTypes = async () => {
+  try {
+    const db = getDatabase();
+    const snapshot = await get(ref(db, "carTypes"));
+
+    if (snapshot.exists()) {
+      const data = snapshot.val();
+      const carTypesArray: CarTypes[] = Object.values(data); // 轉換為陣列
+
+      return { data: carTypesArray };
+    } else {
+      return { data: [] };
+    }
+  } catch (error) {
+    console.error("讀取資料時發生錯誤:", error);
+    throw error;
+  }
+};
+
+// 更新 carTypes
+export const updateCarTypes = async (carType: string, oil: string) => {
+  try {
+    const updateData = {
+      oil,
+    };
+    await update(ref(db, "carTypes/" + carType), updateData);
+    return { success: true, updateData };
+  } catch (error) {
+    console.error(error);
     return { success: false, error };
   }
 };

@@ -18,6 +18,7 @@ import { useGetUserRecord } from "@/hooks/useGetUserRecord";
 import { getCookie } from "@/utils/method";
 import Avatar from "@/components/ui/avatar";
 import { useGetUsersData } from "@/hooks/useGetUsersData";
+import { useGetCarTypes } from "@/hooks/useGetCarTypes";
 
 const { Header, Sider, Content } = Layout;
 
@@ -29,9 +30,13 @@ const LayoutComponent = () => {
   const [selectedKey, setSelectedKey] = useState("1"); // 追蹤選中狀態
   const [userId, setUserId] = useState("");
   const { fetchUserRecord, isLoading } = useGetUserRecord();
+  const { handGetCarTypes } = useGetCarTypes();
 
   const firsrName = useSelector((state: RootState) => state.user.firstName);
+  const userName = useSelector((state: RootState) => state.user.userName);
+
   useEffect(() => {
+    handGetCarTypes(); // 取所有車款
     const retrievedUid = getCookie("uid") ?? "";
     const retrievedToken = getCookie("token") ?? "";
     setUserId(retrievedUid);
@@ -57,6 +62,29 @@ const LayoutComponent = () => {
     dispatch(clearToken());
     navigate("/login");
     messageApi.success("登出成功");
+  };
+
+  // 如果name是大B哥(管理者)才可設置車款資料
+  const generateUserItems = (userName: string, logOutHandler: () => void) => {
+    const baseItems = [
+      {
+        key: "1",
+        label: "登出",
+        onClick: logOutHandler,
+      },
+    ];
+
+    if (userName === "大B哥") {
+      return [
+        {
+          key: "2",
+          label: "車款設置",
+          onClick: () => navigate("/layout/car-type-setting"),
+        },
+        ...baseItems,
+      ];
+    }
+    return baseItems;
   };
 
   const items = {
@@ -132,18 +160,7 @@ const LayoutComponent = () => {
         },
       },
     ],
-    userItems: [
-      // {
-      //   key: "1",
-      //   label: "個人資訊",
-      //   onClick: () => navigate("/layout/user-info"),
-      // },
-      {
-        key: "1",
-        label: "登出",
-        onClick: logOutHandler,
-      },
-    ],
+    userItems: generateUserItems(userName, logOutHandler),
   };
 
   return (

@@ -23,6 +23,7 @@ const BreadCrumb = ({ setSelectedKey }: Props) => {
       "/layout/task": "每週任務",
       "/layout/rank": "排行榜",
       "/layout/user-info": "個人資訊",
+      "/layout/car-type-setting": "車款設置",
     };
 
     // 最後一個項目不要用Link，才能帶出內建的黑字體

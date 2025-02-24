@@ -9,11 +9,12 @@ import Button from "@/components/ui/button";
 import Card from "@/components/ui/card";
 import Input from "@/components/ui/input";
 import { MapPin, Navigation, Search } from "lucide-react";
-import type { InputRef } from "antd";
+import { message, type InputRef } from "antd";
 import { useSearchCarType } from "@/hooks/useSearchCarType";
 import { useSaveRedcord } from "@/hooks/useSaveRecord";
 import { useGetUserRecord } from "@/hooks/useGetUserRecord";
 import { useGetUsersData } from "@/hooks/useGetUsersData";
+
 const containerStyle = {
   width: "100%",
   height: "500px",
@@ -42,6 +43,7 @@ interface Props {
 }
 
 function MyMapComponent({ userId, selectCarType }: Props) {
+  const [messageApi] = message.useMessage();
   const { handSave, contextHolder } = useSaveRedcord();
   const { fetchUserRecord } = useGetUserRecord();
   const { fetchUsersData } = useGetUsersData();
@@ -125,6 +127,7 @@ function MyMapComponent({ userId, selectCarType }: Props) {
     );
   };
 
+  const { selectedCar } = useSearchCarType(selectCarType);
   // 開始導航
   const startNavigation = () => {
     if (currentPosition && selectedPlace) {
@@ -132,15 +135,17 @@ function MyMapComponent({ userId, selectCarType }: Props) {
       window.open(url, "_blank");
       setIsNavigating(true);
 
-      const selectedCar = useSearchCarType(selectCarType);
-      //儲存使用者資訊
-      handSave(userId, {
-        place: searchInput,
-        distance: String(routeInfo?.distance),
-        time: String(routeInfo?.duration),
-        carType: selectedCar?.value ?? "未知車款",
-        oil: selectedCar?.oil ?? "未知",
-      });
+      if (selectedCar) {
+        handSave(userId, {
+          place: searchInput,
+          distance: String(routeInfo?.distance),
+          time: String(routeInfo?.duration),
+          carType: selectedCar?.value ?? "未知車款",
+          oil: selectedCar?.oil ?? "未知",
+        });
+      } else {
+        messageApi.error("抓取車種資料失敗");
+      }
       //重新再抓取使用者資訊
       fetchUserRecord(userId);
       fetchUsersData();

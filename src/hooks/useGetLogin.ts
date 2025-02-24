@@ -3,12 +3,7 @@ import { message } from "antd";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "@/firebaseConfig";
 import type { LoginData } from "@/types/userType";
-import {
-  // setUserEmail,
-  // setUserName,
-  setUserId,
-  setToken,
-} from "@/stores/userSlice";
+import { setUserId, setToken } from "@/stores/userSlice";
 import { useDispatch } from "react-redux";
 
 export const useGetLogin = () => {
@@ -23,7 +18,6 @@ export const useGetLogin = () => {
       const { email, password } = data;
       const res = await loginUser(email, password);
       if (res?.success && res?.user) {
-        // console.log("1111", res);
         const token = await res.user.getIdToken();
         const uid = res.user.uid;
 
@@ -32,12 +26,8 @@ export const useGetLogin = () => {
         document.cookie = `token=${token};expires=${tomorrow.toUTCString()}`;
         document.cookie = `uid=${uid};expires=${tomorrow.toUTCString()}`;
 
-        // dispatch(setUserEmail(res.user.email));
-        // dispatch(setUserName(res.userName));
         dispatch(setUserId(res.user.uid));
         dispatch(setToken(token));
-
-        // dispatch(setTotalRecord(res.userRecords));
 
         messageApi.success("登入成功");
         navigate("/layout");

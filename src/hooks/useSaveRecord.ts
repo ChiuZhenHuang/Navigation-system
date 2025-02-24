@@ -6,7 +6,6 @@ export const useSaveRedcord = () => {
   const [messageApi, contextHolder] = message.useMessage();
   const handSave = async (id: string, action: Action) => {
     try {
-      // 儲存操作紀錄到 Firebase
       const getAction = {
         distance: action.distance,
         place: action.place,

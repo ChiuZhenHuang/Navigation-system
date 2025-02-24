@@ -7,6 +7,7 @@ import Rank from "@/components/layout/rank";
 import Task from "@/components/layout/task";
 import Layout from "@/pages/layout";
 import NotFound from "./components/notFound";
+import CarTypeSetting from "./components/layout/carTypeSetting";
 import "antd/dist/reset.css"; // v5版本引入這個就好
 import "@/assets/all.scss";
 
@@ -23,6 +24,7 @@ function App() {
           <Route path="user-info" element={<UserInfo />} />
           <Route path="rank" element={<Rank />} />
           <Route path="task" element={<Task />} />
+          <Route path="car-type-setting" element={<CarTypeSetting />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>

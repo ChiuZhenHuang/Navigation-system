@@ -4,18 +4,18 @@ import Select from "@/components/ui/select";
 import { useEffect, useState } from "react";
 import { getCookie } from "@/utils/method";
 import Maps from "@/components/layout/maps";
-import { carTypes } from "@/utils/carTypeConfig";
 
 const Home = () => {
   const userName = useSelector((state: RootState) => state.user.userName);
-  // const userId = useSelector((state: RootState) => state.user.userId);
+  const carTypes = useSelector((state: RootState) => state.carTypes.carTypes); // 所有車款資料
+
   const [userId, setUserId] = useState("");
+  const [selectCarType, setSelectCarType] = useState("Audi A4");
+
   useEffect(() => {
     const retrievedUid = getCookie("uid") ?? "";
     setUserId(retrievedUid);
   }, []);
-
-  const [selectCarType, setSelectCarType] = useState("Toyota Corolla");
 
   return (
     <div className="p-4">
