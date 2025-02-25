@@ -64,7 +64,7 @@ const LayoutComponent = () => {
     messageApi.success("登出成功");
   };
 
-  // 如果name是大B哥(管理者)才可設置車款資料
+  // 如果name是(管理員)才可設置車款資料
   const generateUserItems = (userName: string, logOutHandler: () => void) => {
     const baseItems = [
       {
@@ -74,7 +74,7 @@ const LayoutComponent = () => {
       },
     ];
 
-    if (userName === "大B哥") {
+    if (userName === "管理員") {
       return [
         {
           key: "2",

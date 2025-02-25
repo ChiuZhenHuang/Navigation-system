@@ -5,7 +5,7 @@ export const useUpdateCarTypes = () => {
     try {
       const res = await updateCarTypes(carType, oil);
       if (res) {
-        console.log({ res });
+        // console.log({ res });
       }
     } catch (e) {
       console.error(e);

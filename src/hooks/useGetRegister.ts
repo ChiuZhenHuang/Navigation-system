@@ -7,7 +7,6 @@ import type { RegisterData } from "@/types/userType";
 export const useGetRegister = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-
   const register = async (data: RegisterData) => {
     try {
       setLoading(true);

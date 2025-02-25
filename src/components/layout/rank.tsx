@@ -20,7 +20,7 @@ const Rank = () => {
   const [sortedData, setSortedData] = useState<totalRecords[]>([]);
 
   const [currentPage, setCurrentPage] = useState("總里程排行");
-
+  const [navigationPage, setNavigationPage] = useState(1);
   const onChange = (key: string) => {
     switch (key) {
       case "1":
@@ -140,55 +140,62 @@ const Rank = () => {
           position: "bottom",
           align: "center",
           pageSize: 10,
+          current: navigationPage,
+          onChange: (page) => {
+            setNavigationPage(page);
+          },
         }}
-        renderItem={(item: totalRecords, index) => (
-          <List.Item>
-            <List.Item.Meta
-              // avatar={
-              //   <Avatar
-              //     src={`https://api.dicebear.com/7.x/miniavs/svg?seed=${index}`}
-              //   >
-              //     {index + 1}
-              //   </Avatar>
-              // }
-              title={
-                <div className="flex items-center space-x-2 font-bold">
-                  <Avatar
-                    size={20}
-                    className={cn(
-                      "flex justify-center items-center text-white",
-                      index === 0
-                        ? "bg-yellow-500"
-                        : index === 1
-                        ? "bg-gray-400"
-                        : index === 2
-                        ? "bg-amber-700"
-                        : "bg-gray-200 text-black"
-                    )}
-                  >
-                    {index + 1}
-                  </Avatar>
-                  <span>{item.name}</span>
-                </div>
-              }
-              description={
-                currentPage === "總里程排行"
-                  ? `總里程：${formatToThousand(
-                      item.totalDistance.toFixed(1)
-                    )} km`
-                  : currentPage === "總時間排行"
-                  ? `總時間：${formatTime(item.totalTime)}`
-                  : currentPage === "總油費排行"
-                  ? `總油費：${formatToThousand(item.totalOil.toFixed(0))} 元`
-                  : currentPage === "總次數排行"
-                  ? `總次數：${formatToThousand(item.totalCount)} 次`
-                  : currentPage === "積分排行"
-                  ? `總積分：${formatToThousand(item.totalPoints)} 分`
-                  : ""
-              }
-            />
-          </List.Item>
-        )}
+        renderItem={(item: totalRecords, index) => {
+          const displayIndex = (navigationPage - 1) * 10 + index + 1;
+          return (
+            <List.Item>
+              <List.Item.Meta
+                // avatar={
+                //   <Avatar
+                //     src={`https://api.dicebear.com/7.x/miniavs/svg?seed=${index}`}
+                //   >
+                //     {index + 1}
+                //   </Avatar>
+                // }
+                title={
+                  <div className="flex items-center space-x-2 font-bold">
+                    <Avatar
+                      size={20}
+                      className={cn(
+                        "flex justify-center items-center text-white",
+                        displayIndex === 1
+                          ? "bg-yellow-500"
+                          : displayIndex === 2
+                          ? "bg-gray-400"
+                          : displayIndex === 3
+                          ? "bg-amber-700"
+                          : "bg-gray-200 text-black"
+                      )}
+                    >
+                      {displayIndex}
+                    </Avatar>
+                    <span>{item.name}</span>
+                  </div>
+                }
+                description={
+                  currentPage === "總里程排行"
+                    ? `總里程：${formatToThousand(
+                        item.totalDistance.toFixed(1)
+                      )} km`
+                    : currentPage === "總時間排行"
+                    ? `總時間：${formatTime(item.totalTime)}`
+                    : currentPage === "總油費排行"
+                    ? `總油費：${formatToThousand(item.totalOil.toFixed(0))} 元`
+                    : currentPage === "總次數排行"
+                    ? `總次數：${formatToThousand(item.totalCount)} 次`
+                    : currentPage === "積分排行"
+                    ? `總積分：${formatToThousand(item.totalPoints)} 分`
+                    : ""
+                }
+              />
+            </List.Item>
+          );
+        }}
       />
     </div>
   );
