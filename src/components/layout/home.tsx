@@ -40,9 +40,11 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="p-4">
-      <h5 className="mb-4">
-        歡迎 <span className="font-bold">{userName}</span> 回來！
+    <div className="sm:p-4">
+      <h5 className="my-2 sm:mb-4">
+        歡迎
+        <span className="font-bold text-base underline mx-1">{userName}</span>
+        回來！
         {/* <Ai travelData={transformData} /> */}
       </h5>
       <div className="flex items-center mb-4">

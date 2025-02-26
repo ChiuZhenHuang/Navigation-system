@@ -212,6 +212,14 @@ export const addCarTypes = async (carType: string, oil: string) => {
       carType,
       oil,
     };
+    // 檢查該 carType 是否已存在
+    const snapshot = await get(ref(db, "carTypes/" + carType));
+    if (snapshot.exists()) {
+      return {
+        success: false,
+        error: "此車款已存在，請使用其他名稱或更新現有資料",
+      };
+    }
     await set(ref(db, "carTypes/" + carType), cartTypeData);
     return { success: true, cartTypeData };
   } catch (error) {

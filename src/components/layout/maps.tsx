@@ -47,6 +47,7 @@ function MyMapComponent({ userId, selectCarType }: Props) {
   const { handSave, contextHolder } = useSaveRedcord();
   const { fetchUserRecord } = useGetUserRecord();
   const { fetchUsersData } = useGetUsersData();
+  const { selectedCar } = useSearchCarType(selectCarType);
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
     libraries,
@@ -127,7 +128,6 @@ function MyMapComponent({ userId, selectCarType }: Props) {
     );
   };
 
-  const { selectedCar } = useSearchCarType(selectCarType);
   // 開始導航
   const startNavigation = () => {
     if (currentPosition && selectedPlace) {
@@ -200,7 +200,7 @@ function MyMapComponent({ userId, selectCarType }: Props) {
   }
 
   return (
-    <Card className="p-4">
+    <Card className="sm:p-4">
       <div className="flex flex-col gap-4 mb-4">
         <div className="flex gap-4">
           <Button

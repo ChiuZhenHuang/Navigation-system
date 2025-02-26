@@ -226,10 +226,10 @@ const LayoutComponent = () => {
           </Dropdown>
         </Header>
 
-        <Content className="bg-orange-50 flex-1 overflow-hidden">
-          <div className="w-full h-full overflow-hidden">
-            <div className="max-w-full h-full whitespace-normal p-4 overflow-hidden">
-              <div className="flex flex-col h-full border bg-white p-2 shadow-lg rounded-md overflow-hidden">
+        <Content className="bg-orange-50 flex-1">
+          <div className="w-full h-full">
+            <div className="max-w-full h-full whitespace-normal sm:p-4">
+              <div className="flex flex-col h-full bg-white p-2 shadow-lg sm:rounded-md sm:border">
                 <BreadCrumb setSelectedKey={setSelectedKey} />
                 {isLoading ? (
                   <div>loding...</div>

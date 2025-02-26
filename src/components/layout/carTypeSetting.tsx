@@ -7,6 +7,7 @@ import { RootState } from "@/store";
 import type { CarTypesData, CarTypes } from "@/types/carTypes";
 import { useEffect, useState } from "react";
 import { useGetCarTypes } from "@/hooks/useGetCarTypes";
+import { useAddCarTypes } from "@/hooks/useAddCarType";
 
 interface ModifiedData {
   carType: string;
@@ -16,8 +17,10 @@ interface ModifiedData {
 
 const CarTypeSetting = () => {
   const [carTypeData, setCarTypeData] = useState<CarTypes[]>([]);
-  const [isUpdating, setIsUpdating] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false); // 儲存中
   const [modifiedData, setModifiedData] = useState<ModifiedData | null>(null); // 當前有改油耗的車款
+  const [isAdding, setIsAdding] = useState(false); // 新增中
+  const [addCar, setAddCar] = useState<CarTypes | null>(null); // 欲新增車款資料
 
   const totalCarTypes = useSelector(
     (state: RootState) => state.carTypes.carTypes
@@ -26,6 +29,7 @@ const CarTypeSetting = () => {
   const [messageApi, contextHolder] = message.useMessage();
   const { handGetCarTypes } = useGetCarTypes();
   const { handUpdateCarType } = useUpdateCarTypes();
+  const { handAddCarType } = useAddCarTypes();
 
   useEffect(() => {
     handGetCarTypes();
@@ -104,10 +108,35 @@ const CarTypeSetting = () => {
     );
   };
 
+  // 新增車款設定按鈕
+  const handleAddCar = async () => {
+    if (!addCar) {
+      setAddCar({
+        carType: "",
+        oil: "",
+      });
+    } else {
+      // 第二次點擊：檢查並提交資料
+      if (!addCar.carType || !addCar.oil) {
+        messageApi.error("請完整輸入新增車款");
+        return;
+      }
+
+      setIsAdding(true);
+      const result = await handAddCarType(addCar.carType, addCar.oil);
+      if (result.success) {
+        messageApi.success("新增成功");
+        await handGetCarTypes();
+        setAddCar(null);
+      } else {
+        messageApi.error(result.error);
+      }
+      setIsAdding(false);
+    }
+  };
   return (
     <div className="m-2">
       {contextHolder}
-
       <div className="flex gap-2 mb-4">
         <Button
           className="p-1"
@@ -116,7 +145,46 @@ const CarTypeSetting = () => {
         >
           {isUpdating ? "儲存中..." : "儲存"}
         </Button>
+        <Button className="p-1" onClick={handleAddCar}>
+          {isAdding ? "新增中..." : "新增"}
+        </Button>
       </div>
+
+      {/* 新增 */}
+      {addCar && (
+        <div className="w-full flex flex-col border-b p-2 justify-center items-center sm:flex-row ">
+          <div className="py-1 w-full flex justify-center items-center sm:p-1">
+            <div className="min-w-[45px]">車款：</div>
+            <Input
+              value={addCar.carType}
+              className="flex-1"
+              onChange={(e) =>
+                setAddCar((prev) => ({
+                  ...prev,
+                  oil: prev?.oil ?? "",
+                  carType: e.target.value,
+                }))
+              }
+            />
+          </div>
+          <div className="py-1 w-full flex justify-center items-center sm:p-1">
+            <div className="min-w-[45px]">油耗：</div>
+            <InputNumber
+              value={Number(addCar.oil)}
+              min={0}
+              type="number"
+              className="flex-1"
+              onChange={(e) =>
+                setAddCar((prev) => ({
+                  ...prev,
+                  oil: String(e),
+                  carType: prev?.carType ?? "",
+                }))
+              }
+            />
+          </div>
+        </div>
+      )}
 
       {carTypeData.length > 0 ? (
         carTypeData.map((car: CarTypes, index) => {
@@ -137,6 +205,7 @@ const CarTypeSetting = () => {
                 <InputNumber
                   className={`flex-1 ${isModified ? "border-blue-500" : ""}`}
                   value={Number(car.oil)}
+                  min={0}
                   onChange={(value) =>
                     handleOilChange(
                       index,
