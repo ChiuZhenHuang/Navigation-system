@@ -33,7 +33,7 @@ export const formatTime = (minutes: number) => {
 export const taskOptions: TaskOptions[] = [
   { title: "週累積里程", target: "1000", point: "1000" },
   { title: "週導航次數", target: "5", point: "500" },
-  { title: "週油耗總計", target: "2000", point: "700" },
+  { title: "週油費總計", target: "2000", point: "700" },
 ];
 
 // 計算各項數據
@@ -66,3 +66,9 @@ export const calculateTotalPoints = (
     percentOil,
   };
 };
+
+// 油費計算(假設1L30元)
+export const calculateOilMoney = (
+  distance: string | number,
+  oil: string | number
+): number => (Number(distance) / Number(oil)) * 30;

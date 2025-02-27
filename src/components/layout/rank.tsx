@@ -8,6 +8,7 @@ import {
   formatToThousand,
   formatTime,
   calculateTotalPoints,
+  calculateOilMoney,
 } from "@/utils/method";
 import { cn } from "@/utils/cn";
 
@@ -83,7 +84,7 @@ const Rank = () => {
         totalTime += hours * 60 + minutes; // 轉換成總分鐘數
 
         // 轉換油費數值
-        totalOil += parseFloat(rec.action.oil) * distance;
+        totalOil += calculateOilMoney(distance, rec.action.oil);
       });
 
       const { totalPoints } = calculateTotalPoints(
@@ -189,7 +190,7 @@ const Rank = () => {
                     : currentPage === "總次數排行"
                     ? `總次數：${formatToThousand(item.totalCount)} 次`
                     : currentPage === "積分排行"
-                    ? `總積分：${formatToThousand(item.totalPoints)} 分`
+                    ? `週積分：${formatToThousand(item.totalPoints)} 分`
                     : ""
                 }
               />

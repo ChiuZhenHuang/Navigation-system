@@ -110,6 +110,10 @@ const CarTypeSetting = () => {
 
   // 新增車款設定按鈕
   const handleAddCar = async () => {
+    if (modifiedData) {
+      messageApi.error("請先將修改車款儲存");
+      return;
+    }
     if (!addCar) {
       setAddCar({
         carType: "",
@@ -137,22 +141,33 @@ const CarTypeSetting = () => {
   return (
     <div className="m-2">
       {contextHolder}
-      <div className="flex gap-2 mb-4">
+
+      {/* 儲存 / 新增 / 取消 */}
+      <div className="flex gap-2 my-2">
         <Button
           className="p-1"
           onClick={handleSave}
-          disabled={isUpdating || !modifiedData}
+          disabled={isUpdating || !modifiedData || !!addCar}
         >
           {isUpdating ? "儲存中..." : "儲存"}
         </Button>
-        <Button className="p-1" onClick={handleAddCar}>
+        <Button
+          className="p-1"
+          onClick={handleAddCar}
+          disabled={!!modifiedData}
+        >
           {isAdding ? "新增中..." : "新增"}
         </Button>
+        {!!addCar && (
+          <Button className="p-1" onClick={() => setAddCar(null)}>
+            取消
+          </Button>
+        )}
       </div>
 
       {/* 新增 */}
       {addCar && (
-        <div className="w-full flex flex-col border-b p-2 justify-center items-center sm:flex-row ">
+        <div className="w-full flex flex-col border-b p-2 justify-center items-center sm:flex-row">
           <div className="py-1 w-full flex justify-center items-center sm:p-1">
             <div className="min-w-[45px]">車款：</div>
             <Input
@@ -185,7 +200,6 @@ const CarTypeSetting = () => {
           </div>
         </div>
       )}
-
       {carTypeData.length > 0 ? (
         carTypeData.map((car: CarTypes, index) => {
           const isModified = modifiedData?.carType === car.carType;

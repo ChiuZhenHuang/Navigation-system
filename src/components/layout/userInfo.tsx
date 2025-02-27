@@ -7,7 +7,7 @@ import Card from "@/components/ui/card";
 import type { ActionResponse } from "@/types/recordType";
 import { getCookie } from "@/utils/method";
 import { useNavigate } from "react-router-dom";
-import { formatToThousand } from "@/utils/method";
+import { formatToThousand, calculateOilMoney } from "@/utils/method";
 import Avatar from "@/components/ui/avatar";
 
 const UserInfo = () => {
@@ -62,11 +62,9 @@ const UserInfo = () => {
                       <p>花費時間：{time}</p>
                       <p>使用車種：{carType}</p>
                       <p>
-                        預估油錢：NT$
+                        預估油費：NT$
                         {formatToThousand(
-                          Number(
-                            Number(spiltDistance[0]) * Number(oil)
-                          ).toFixed(0)
+                          calculateOilMoney(spiltDistance[0], oil).toFixed(0)
                         )}
                         元
                       </p>

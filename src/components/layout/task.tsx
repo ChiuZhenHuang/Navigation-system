@@ -16,6 +16,7 @@ import {
   formatToThousand,
   calculateTotalPoints,
   taskOptions,
+  calculateOilMoney,
 } from "@/utils/method";
 
 const Task = () => {
@@ -36,7 +37,7 @@ const Task = () => {
 
     const transformedRecords = filerWeek.map((item: ActionResponse) => {
       const totalDistance = Number(item.action.distance.split(" 公里")[0]);
-      const totalOil = Number(totalDistance) * Number(item.action.oil);
+      const totalOil = calculateOilMoney(totalDistance, item.action.oil);
 
       return {
         totalDistance,
@@ -134,7 +135,7 @@ const Task = () => {
           const taskValues = {
             週累積里程: Number(totalRecord?.totalDistance) || 0,
             週導航次數: Number(totalRecord?.toalCount) || 0,
-            週油耗總計: Number(totalRecord?.totalOil) || 0,
+            週油費總計: Number(totalRecord?.totalOil) || 0,
           } as const; // 讓 TypeScript 知道這些 key 是固定字串
 
           const currentValue =
