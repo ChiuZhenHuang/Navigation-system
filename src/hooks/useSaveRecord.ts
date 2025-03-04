@@ -1,24 +1,23 @@
-import { saveUserRecord } from "@/firebaseConfig";
 import type { Action } from "@/types/recordType";
-import { message } from "antd";
+import { useSaveUserRecordMutation } from "@/services/firebaseApi";
 
-export const useSaveRedcord = () => {
-  const [messageApi, contextHolder] = message.useMessage();
-  const handSave = async (id: string, action: Action) => {
+export const useSaveRecord = () => {
+  const [saveUserRecord, { isLoading }] = useSaveUserRecordMutation();
+
+  const handSave = async (userId: string, action: Action) => {
     try {
-      const getAction = {
-        distance: action.distance,
-        place: action.place,
-        carType: action.carType,
-        oil: action.oil,
-        time: action.time,
-      };
       const timestamp = Date.now();
-      await saveUserRecord(id, getAction, timestamp);
-      messageApi.success("已儲存資料");
+      await saveUserRecord({
+        userId,
+        action,
+        timestamp,
+      }).unwrap();
+      return { success: true };
     } catch (error) {
-      console.error("Error updating profile:", error);
+      console.error("Error saving record:", error);
+      return { success: false, error };
     }
   };
-  return { handSave, contextHolder };
+
+  return { handSave, isLoading };
 };

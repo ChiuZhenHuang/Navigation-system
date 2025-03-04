@@ -1,33 +1,31 @@
-import { getUserRecords } from "@/firebaseConfig";
+import { useGetUserRecordsQuery } from "@/services/firebaseApi";
+import { useDispatch } from "react-redux";
 import { setUserEmail, setUserName, setFirstName } from "@/stores/userSlice";
 import { setTotalRecord } from "@/stores/recordSlice";
-import { useDispatch } from "react-redux";
-import { useState } from "react";
+import { useEffect } from "react";
 
-export const useGetUserRecord = () => {
+export const useGetUserRecord = (userId: string | undefined) => {
   const dispatch = useDispatch();
+  const {
+    data: userRecords,
+    isLoading,
+    error,
+  } = useGetUserRecordsQuery(userId, {
+    skip: !userId,
+  });
 
-  const [isLoading, setIsLoading] = useState(false);
-  const fetchUserRecord = async (id: string) => {
-    try {
-      setIsLoading(true);
-      const res = await getUserRecords(id);
+  useEffect(() => {
+    if (userRecords) {
+      const firstName = userRecords.name
+        ? String(userRecords.name).split("")[0]
+        : "";
 
-      if (res?.success) {
-        // console.log("res", res);
-
-        const firstName = res?.name ? String(res?.name).split("")[0] : "";
-
-        dispatch(setUserEmail(res.email));
-        dispatch(setUserName(res.name));
-        dispatch(setFirstName(firstName));
-        dispatch(setTotalRecord(res.records));
-      }
-    } catch (error) {
-      console.error("Error updating profile:", error);
-    } finally {
-      setIsLoading(false);
+      dispatch(setUserEmail(userRecords.email));
+      dispatch(setUserName(userRecords.name));
+      dispatch(setFirstName(firstName));
+      dispatch(setTotalRecord(userRecords.records));
     }
-  };
-  return { fetchUserRecord, isLoading };
+  }, [userRecords, dispatch]);
+
+  return { userRecords, isLoading, error };
 };

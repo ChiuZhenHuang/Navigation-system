@@ -13,58 +13,66 @@ import { clearToken } from "../stores/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../store";
 import Button from "@/components/ui/button";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useGetUserRecord } from "@/hooks/useGetUserRecord";
 import { getCookie } from "@/utils/method";
 import Avatar from "@/components/ui/avatar";
 import { useGetUsersData } from "@/hooks/useGetUsersData";
 import { useGetCarTypes } from "@/hooks/useGetCarTypes";
-
+import { useLocation } from "react-router-dom";
 const { Header, Sider, Content } = Layout;
 
 const LayoutComponent = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [collapsed, setCollapsed] = useState(true);
-  const [messageApi, contextHolder] = message.useMessage();
-  const [selectedKey, setSelectedKey] = useState("1"); // 追蹤選中狀態
-  const [userId, setUserId] = useState("");
-  const { fetchUserRecord, isLoading } = useGetUserRecord();
-  const { handGetCarTypes } = useGetCarTypes();
+  const location = useLocation();
 
+  const [collapsed, setCollapsed] = useState(true);
+  const [selectedKey, setSelectedKey] = useState("1");
+  const [userId, setUserId] = useState("");
+
+  // RTK Query hooks
+  const { isLoading } = useGetUserRecord(userId);
+  useGetCarTypes();
+  useGetUsersData(userId);
+
+  // Redux selectors
   const firsrName = useSelector((state: RootState) => state.user.firstName);
   const userName = useSelector((state: RootState) => state.user.userName);
 
+  // 檢查是否有 token 和 userId
+  const hasAuth = Boolean(getCookie("token") && userId);
+
   useEffect(() => {
-    handGetCarTypes(); // 取所有車款
+    if (location.state?.message) {
+      message.success(location.state.message);
+    }
+  }, [location.state]);
+
+  useEffect(() => {
     const retrievedUid = getCookie("uid") ?? "";
     const retrievedToken = getCookie("token") ?? "";
     setUserId(retrievedUid);
 
     if (!retrievedToken) {
       navigate("/login");
+      return;
     }
   }, [navigate]);
 
-  useEffect(() => {
-    fetchUserRecord(userId);
-  }, [userId]);
-
-  const { fetchUsersData } = useGetUsersData();
-
-  useEffect(() => {
-    fetchUsersData();
-  }, []);
-
-  const logOutHandler = () => {
+  const logOutHandler = useCallback(() => {
     document.cookie = "token=; max-age=0; path=/;";
     document.cookie = "uid=; max-age=0; path=/;";
     dispatch(clearToken());
-    navigate("/login");
-    messageApi.success("登出成功");
-  };
+    navigate("/login", { state: { message: "登出成功" }, replace: true });
+  }, [dispatch, navigate]);
 
-  // 如果name是(管理員)才可設置車款資料
+  // 如果沒有必要的資料，不渲染內容
+  if (!hasAuth) {
+    return null;
+  }
+
+  // 如果name是(管理員)才可設置車款
   const generateUserItems = (userName: string, logOutHandler: () => void) => {
     const baseItems = [
       {
@@ -165,8 +173,6 @@ const LayoutComponent = () => {
 
   return (
     <Layout className="h-screen">
-      {contextHolder}
-
       <Sider
         trigger={null}
         collapsed={collapsed}
@@ -232,7 +238,7 @@ const LayoutComponent = () => {
               <div className="flex flex-col h-full bg-white p-2 shadow-lg sm:rounded-md sm:border">
                 <BreadCrumb setSelectedKey={setSelectedKey} />
                 {isLoading ? (
-                  <div>loding...</div>
+                  <div>載入中...</div>
                 ) : (
                   <div className="flex-1 overflow-auto">
                     <Outlet />

@@ -4,12 +4,13 @@ import Select from "@/components/ui/select";
 import { useEffect, useState } from "react";
 import { getCookie } from "@/utils/method";
 import Maps from "@/components/layout/maps";
+import { useGetCarTypesQuery } from "@/services/firebaseApi";
 // import Ai from "./ai";
 // import type { ActionResponse } from "@/types/recordType";
 
 const Home = () => {
   const userName = useSelector((state: RootState) => state.user.userName);
-  const carTypes = useSelector((state: RootState) => state.carTypes.carTypes); // 所有車款資料
+  const { data: carTypes, isLoading } = useGetCarTypesQuery();
   // const userRecord = useSelector(
   //   (state: RootState) => state.record.totalRecord
   // ); // 所有車款資料
@@ -32,12 +33,23 @@ const Home = () => {
   // }, [userRecord]);
 
   const [userId, setUserId] = useState("");
-  const [selectCarType, setSelectCarType] = useState("Audi A4");
+  const [selectCarType, setSelectCarType] = useState("");
 
   useEffect(() => {
     const retrievedUid = getCookie("uid") ?? "";
     setUserId(retrievedUid);
   }, []);
+
+  // 當車型數據載入後，設置默認選擇
+  useEffect(() => {
+    if (carTypes && carTypes.length > 0 && !selectCarType) {
+      setSelectCarType(carTypes[0].value);
+    }
+  }, [carTypes, selectCarType]);
+
+  if (isLoading) {
+    return <div>載入中...</div>;
+  }
 
   return (
     <div className="sm:p-4">
@@ -51,9 +63,11 @@ const Home = () => {
         <span className="min-w-[100px]">選擇您的車款：</span>
         <Select
           className="w-full"
-          options={carTypes}
+          options={carTypes || []}
           value={selectCarType}
           onChange={(value) => setSelectCarType(value)}
+          disabled={isLoading}
+          placeholder={isLoading ? "載入中..." : "請選擇車款"}
         />
       </div>
 

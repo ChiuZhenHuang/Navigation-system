@@ -40,27 +40,17 @@ const Rank = () => {
   };
 
   const tabItems = [
-    {
-      key: "1",
-      label: <div className="text-[#A1754D]">總里程排行</div>,
-    },
-    {
-      key: "2",
-      label: <div className="text-[#A1754D]">總時間排行</div>,
-    },
-    {
-      key: "3",
-      label: <div className="text-[#A1754D]">總油費排行</div>,
-    },
-    {
-      key: "4",
-      label: <div className="text-[#A1754D]">總次數排行</div>,
-    },
-    {
-      key: "5",
-      label: <div className="text-[#A1754D]">積分排行</div>,
-    },
-  ];
+    "總里程排行",
+    "總時間排行",
+    "總油費排行",
+    "總次數排行",
+    "積分排行",
+  ].map((item: string, index: number) => {
+    return {
+      key: String(index + 1),
+      label: <div className="text-[#A1754D]">{item}</div>,
+    };
+  });
 
   useEffect(() => {
     const newData = userTotalData.map((item: totalRecords) => {

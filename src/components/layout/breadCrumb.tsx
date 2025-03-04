@@ -1,5 +1,5 @@
 import { Breadcrumb } from "antd";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { HomeOutlined } from "@ant-design/icons";
 
 interface Props {
@@ -8,7 +8,7 @@ interface Props {
 
 const BreadCrumb = ({ setSelectedKey }: Props) => {
   const location = useLocation();
-
+  const navigate = useNavigate();
   // 將路徑分割成階層
   const pathSnippets = location.pathname.split("/").filter((i) => i);
 
@@ -18,7 +18,7 @@ const BreadCrumb = ({ setSelectedKey }: Props) => {
 
     // Record用法:key類型,value類型
     const breadcrumbMap: Record<string, string | JSX.Element> = {
-      "/layout": <HomeOutlined onClick={() => setSelectedKey("1")} />,
+      "/layout": <HomeOutlined />,
       "/layout/home": "導航",
       "/layout/task": "每週任務",
       "/layout/rank": "排行榜",
@@ -33,7 +33,16 @@ const BreadCrumb = ({ setSelectedKey }: Props) => {
       title: lastItem ? (
         breadcrumbMap[url]
       ) : (
-        <Link to={url}>{breadcrumbMap[url]}</Link>
+        <Link
+          to={url}
+          onClick={(e) => {
+            e.preventDefault();
+            setSelectedKey("1");
+            navigate(url);
+          }}
+        >
+          {breadcrumbMap[url]}
+        </Link>
       ),
     };
   });

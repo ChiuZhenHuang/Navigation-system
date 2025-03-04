@@ -1,31 +1,44 @@
-import { useState } from "react";
 import { message } from "antd";
 import { useNavigate } from "react-router-dom";
-import { registerUser } from "@/firebaseConfig";
 import type { RegisterData } from "@/types/userType";
+import { useRegisterUserMutation } from "@/services/firebaseApi";
+import { FirebaseError } from "firebase/app";
 
 export const useGetRegister = () => {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
+  const [messageApi, contextHolder] = message.useMessage();
+  const [registerUser, { isLoading }] = useRegisterUserMutation();
+
   const register = async (data: RegisterData) => {
     try {
-      setLoading(true);
-
       const { name, email, password } = data;
-      const res = await registerUser(name, email, password);
-      if (res.success && res.user) {
-        message.success("註冊成功");
-        navigate("/login");
-      } else {
-        message.error("註冊失敗");
+      const result = await registerUser({ name, email, password }).unwrap();
+
+      if (result?.success) {
+        navigate("/login", {
+          state: { message: "註冊成功，請登入" },
+          replace: true,
+        });
       }
-    } catch (e) {
-      console.error(e);
-      message.error("註冊失敗");
-    } finally {
-      setLoading(false);
+    } catch (error: unknown) {
+      console.error("註冊錯誤:", error);
+      if (error instanceof FirebaseError) {
+        switch (error.code) {
+          case "auth/email-already-in-use":
+            messageApi.error("此信箱已被註冊");
+            break;
+          case "auth/invalid-email":
+            messageApi.error("無效的信箱格式");
+            break;
+          case "auth/weak-password":
+            messageApi.error("密碼強度不足");
+            break;
+          default:
+            messageApi.error("註冊失敗，請稍後再試");
+        }
+      }
     }
   };
 
-  return { register, loading };
+  return { register, isLoading, contextHolder };
 };

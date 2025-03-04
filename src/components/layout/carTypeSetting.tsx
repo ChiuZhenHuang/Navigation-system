@@ -1,13 +1,13 @@
 import Input from "@/components/ui/input";
 import Button from "@/components/ui/button";
 import { InputNumber, message } from "antd";
-import { useUpdateCarTypes } from "@/hooks/useUpdateCarType";
-import { useSelector } from "react-redux";
-import { RootState } from "@/store";
 import type { CarTypesData, CarTypes } from "@/types/carTypes";
 import { useEffect, useState } from "react";
 import { useGetCarTypes } from "@/hooks/useGetCarTypes";
-import { useAddCarTypes } from "@/hooks/useAddCarType";
+import { useUpdateCarType } from "@/hooks/useUpdateCarType";
+import { useAddCarType } from "@/hooks/useAddCarType";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
 
 interface ModifiedData {
   carType: string;
@@ -17,32 +17,27 @@ interface ModifiedData {
 
 const CarTypeSetting = () => {
   const [carTypeData, setCarTypeData] = useState<CarTypes[]>([]);
-  const [isUpdating, setIsUpdating] = useState(false); // 儲存中
-  const [modifiedData, setModifiedData] = useState<ModifiedData | null>(null); // 當前有改油耗的車款
-  const [isAdding, setIsAdding] = useState(false); // 新增中
-  const [addCar, setAddCar] = useState<CarTypes | null>(null); // 欲新增車款資料
+  const [modifiedData, setModifiedData] = useState<ModifiedData | null>(null);
+  const [addCar, setAddCar] = useState<CarTypes | null>(null);
+
+  const [messageApi, contextHolder] = message.useMessage();
+  const { isLoading: isLoadingCarTypes } = useGetCarTypes();
+  const { handleUpdateCarType, isLoading: isUpdating } = useUpdateCarType();
+  const { handleAddCarType, isLoading: isAdding } = useAddCarType();
 
   const totalCarTypes = useSelector(
     (state: RootState) => state.carTypes.carTypes
   ) as CarTypesData[];
 
-  const [messageApi, contextHolder] = message.useMessage();
-  const { handGetCarTypes } = useGetCarTypes();
-  const { handUpdateCarType } = useUpdateCarTypes();
-  const { handAddCarType } = useAddCarTypes();
-
   useEffect(() => {
-    handGetCarTypes();
-  }, []);
-
-  useEffect(() => {
-    const newCarData = totalCarTypes.map((car: CarTypesData) => {
-      return {
+    if (totalCarTypes) {
+      const newCarData = totalCarTypes.map((car: CarTypesData) => ({
+        value: car.value,
         carType: car.value,
         oil: car.oil,
-      };
-    });
-    setCarTypeData(newCarData);
+      }));
+      setCarTypeData(newCarData);
+    }
   }, [totalCarTypes]);
 
   // 處理油耗改變
@@ -52,20 +47,17 @@ const CarTypeSetting = () => {
     carType: string,
     originalOil: string
   ) => {
-    // 如果有其他已修改尚未保存，先擋住
     if (modifiedData && modifiedData.carType !== carType) {
-      message.warning("請先儲存當前修改的數據");
+      messageApi.warning("請先儲存當前修改的數據");
       return;
     }
 
     const newValue = value || "0";
 
-    // 更新顯示的資料
     const newData = [...carTypeData];
     newData[index].oil = newValue;
     setCarTypeData(newData);
 
-    // 判斷和是否有修改油耗
     if (newValue !== originalOil) {
       setModifiedData({
         carType,
@@ -84,21 +76,20 @@ const CarTypeSetting = () => {
       return;
     }
     try {
-      setIsUpdating(true);
-      await handUpdateCarType(
+      const result = await handleUpdateCarType(
         modifiedData.carType,
-        String(modifiedData.newOil)
+        modifiedData.newOil
       );
-      // 保存成功后重置當前追蹤資料
-      setModifiedData(null);
 
-      await handGetCarTypes();
-      messageApi.success("儲存成功");
+      if (result.success) {
+        setModifiedData(null);
+        messageApi.success("儲存成功");
+      } else {
+        messageApi.error("儲存失敗");
+      }
     } catch (error) {
       console.error("保存失败:", error);
       messageApi.error("儲存失敗");
-    } finally {
-      setIsUpdating(false);
     }
   };
 
@@ -116,33 +107,34 @@ const CarTypeSetting = () => {
     }
     if (!addCar) {
       setAddCar({
+        value: "",
         carType: "",
         oil: "",
       });
     } else {
-      // 第二次點擊：檢查並提交資料
       if (!addCar.carType || !addCar.oil) {
         messageApi.error("請完整輸入新增車款");
         return;
       }
 
-      setIsAdding(true);
-      const result = await handAddCarType(addCar.carType, addCar.oil);
+      const result = await handleAddCarType(addCar.carType, addCar.oil);
       if (result.success) {
         messageApi.success("新增成功");
-        await handGetCarTypes();
         setAddCar(null);
       } else {
         messageApi.error(result.error);
       }
-      setIsAdding(false);
     }
   };
+
+  if (isLoadingCarTypes) {
+    return <div>載入中...</div>;
+  }
+
   return (
     <div className="m-2">
       {contextHolder}
 
-      {/* 儲存 / 新增 / 取消 */}
       <div className="flex gap-2 my-2">
         <Button
           className="p-1"
@@ -165,7 +157,6 @@ const CarTypeSetting = () => {
         )}
       </div>
 
-      {/* 新增 */}
       {addCar && (
         <div className="w-full flex flex-col border-b p-2 justify-center items-center sm:flex-row">
           <div className="py-1 w-full flex justify-center items-center sm:p-1">
@@ -175,9 +166,10 @@ const CarTypeSetting = () => {
               className="flex-1"
               onChange={(e) =>
                 setAddCar((prev) => ({
-                  ...prev,
-                  oil: prev?.oil ?? "",
+                  ...prev!,
+                  value: e.target.value,
                   carType: e.target.value,
+                  oil: prev?.oil ?? "",
                 }))
               }
             />
@@ -191,9 +183,10 @@ const CarTypeSetting = () => {
               className="flex-1"
               onChange={(e) =>
                 setAddCar((prev) => ({
-                  ...prev,
-                  oil: String(e),
+                  ...prev!,
+                  value: prev?.value ?? "",
                   carType: prev?.carType ?? "",
+                  oil: String(e),
                 }))
               }
             />

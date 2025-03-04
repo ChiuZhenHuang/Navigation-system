@@ -3,7 +3,7 @@ export interface Action {
   place: string; // 地點
   carType: string; // 車種
   oil: string; // 油耗
-  time: string;
+  time: string; // 時間
 }
 
 export interface UserRecord {

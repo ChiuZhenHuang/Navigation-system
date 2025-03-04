@@ -1,17 +1,23 @@
-import { getUsersData } from "@/firebaseConfig";
-
-import { setUserTotalData } from "@/stores/userSlice";
+import { useGetUsersDataQuery } from "@/services/firebaseApi";
 import { useDispatch } from "react-redux";
+import { setUserTotalData } from "@/stores/userSlice";
+import { useEffect } from "react";
 
-export const useGetUsersData = () => {
+export const useGetUsersData = (userId: string | undefined) => {
   const dispatch = useDispatch();
-  const fetchUsersData = async () => {
-    const response = await getUsersData();
+  const {
+    data: usersData,
+    isLoading,
+    error,
+  } = useGetUsersDataQuery(undefined, {
+    skip: !userId,
+  });
 
-    if (response.data) {
-      dispatch(setUserTotalData(response.data));
+  useEffect(() => {
+    if (usersData) {
+      dispatch(setUserTotalData(usersData));
     }
-  };
+  }, [usersData, dispatch]);
 
-  return { fetchUsersData };
+  return { usersData, isLoading, error };
 };

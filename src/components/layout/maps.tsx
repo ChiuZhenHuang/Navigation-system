@@ -11,7 +11,7 @@ import Input from "@/components/ui/input";
 import { MapPin, Navigation, Search } from "lucide-react";
 import { message, type InputRef } from "antd";
 import { useSearchCarType } from "@/hooks/useSearchCarType";
-import { useSaveRedcord } from "@/hooks/useSaveRecord";
+import { useSaveRecord } from "@/hooks/useSaveRecord";
 import { useGetUserRecord } from "@/hooks/useGetUserRecord";
 import { useGetUsersData } from "@/hooks/useGetUsersData";
 
@@ -43,10 +43,10 @@ interface Props {
 }
 
 function MyMapComponent({ userId, selectCarType }: Props) {
-  const [messageApi] = message.useMessage();
-  const { handSave, contextHolder } = useSaveRedcord();
-  const { fetchUserRecord } = useGetUserRecord();
-  const { fetchUsersData } = useGetUsersData();
+  const [messageApi, contextHolder] = message.useMessage();
+  const { handSave } = useSaveRecord();
+  useGetUserRecord(userId);
+  useGetUsersData(userId);
   const { selectedCar } = useSearchCarType(selectCarType);
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
@@ -129,26 +129,35 @@ function MyMapComponent({ userId, selectCarType }: Props) {
   };
 
   // 開始導航
-  const startNavigation = () => {
+  const startNavigation = async () => {
     if (currentPosition && selectedPlace) {
       const url = `https://www.google.com/maps/dir/?api=1&origin=${currentPosition.lat},${currentPosition.lng}&destination=${selectedPlace.lat},${selectedPlace.lng}&travelmode=driving`;
       window.open(url, "_blank");
       setIsNavigating(true);
 
       if (selectedCar) {
-        handSave(userId, {
-          place: searchInput,
-          distance: String(routeInfo?.distance),
-          time: String(routeInfo?.duration),
-          carType: selectedCar?.value ?? "未知車款",
-          oil: selectedCar?.oil ?? "未知",
-        });
+        try {
+          const action = {
+            place: searchInput,
+            distance: String(routeInfo?.distance),
+            time: String(routeInfo?.duration),
+            carType: selectedCar?.value ?? "未知車款",
+            oil: selectedCar?.oil ?? "未知",
+          };
+
+          const result = await handSave(userId, action);
+          if (result.success) {
+            messageApi.success("已儲存路線資料");
+          } else {
+            messageApi.error("儲存路線資料失敗");
+          }
+        } catch (error) {
+          messageApi.error("儲存路線資料失敗");
+          console.error("Error saving navigation data:", error);
+        }
       } else {
         messageApi.error("抓取車種資料失敗");
       }
-      //重新再抓取使用者資訊
-      fetchUserRecord(userId);
-      fetchUsersData();
     }
   };
 

@@ -1,20 +1,17 @@
-import { addCarTypes } from "@/firebaseConfig";
+import { useAddCarTypesMutation } from "@/services/firebaseApi";
 
-export const useAddCarTypes = () => {
-  const handAddCarType = async (carType: string, oil: string) => {
+export const useAddCarType = () => {
+  const [addCarType, { isLoading }] = useAddCarTypesMutation();
+
+  const handleAddCarType = async (carType: string, oil: string) => {
     try {
-      const res = await addCarTypes(carType, oil);
-      console.log("新增車款res", res);
-      if (res.success) {
-        return { success: true };
-      } else {
-        return { success: false, error: res.error as string };
-      }
-    } catch (e) {
-      console.error(e);
-      return { success: false, error: "新增失敗！請重新再試" };
+      await addCarType({ carType, oil }).unwrap();
+      return { success: true };
+    } catch (error: any) {
+      console.error("新增車款失敗:", error);
+      return { success: false, error: error.message || "新增失敗" };
     }
   };
 
-  return { handAddCarType };
+  return { handleAddCarType, isLoading };
 };

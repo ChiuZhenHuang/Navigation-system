@@ -6,13 +6,17 @@ import Button from "@/components/ui/button";
 import Input from "@/components/ui/input";
 import type { LoginData } from "@/types/userType";
 import NavigateImg from "@/assets/images/navigate.png";
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 const LoginPage = () => {
   const [form] = Form.useForm();
 
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const { login, loading, contextHolder } = useGetLogin();
+  const { login, isLoading } = useGetLogin();
+
   const onFinish = (values: LoginData) => {
     const { email, password } = values;
     login({ email, password });
@@ -23,9 +27,14 @@ const LoginPage = () => {
     message.error("請檢查是否輸入完整");
   };
 
+  useEffect(() => {
+    if (location.state?.message) {
+      message.success(location.state.message);
+    }
+  }, [location.state]);
+
   return (
     <div className="bg-orange-50">
-      {contextHolder}
       <Row justify="center" align="middle" className="h-screen">
         <Col xs={20} sm={16} md={12} xl={8}>
           <Form
@@ -54,7 +63,6 @@ const LoginPage = () => {
               </div>
             </div>
             <Form.Item
-              // label="Email"
               name="email"
               rules={[
                 { required: true, message: "請輸入Email" },
@@ -69,7 +77,6 @@ const LoginPage = () => {
             </Form.Item>
 
             <Form.Item
-              // label="密碼"
               name="password"
               rules={[
                 { required: true, message: "請輸入密碼" },
@@ -90,7 +97,7 @@ const LoginPage = () => {
                 block
                 className="p-4 bg-orange-400 transition-colors hover:bg-orange-500/100"
               >
-                {loading && (
+                {isLoading && (
                   <Spin
                     indicator={<LoadingOutlined spin className="text-white" />}
                     size="small"

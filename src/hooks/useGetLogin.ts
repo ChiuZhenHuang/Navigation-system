@@ -1,46 +1,56 @@
-import { useState } from "react";
 import { message } from "antd";
 import { useNavigate } from "react-router-dom";
-import { loginUser } from "@/firebaseConfig";
 import type { LoginData } from "@/types/userType";
-import { setUserId, setToken } from "@/stores/userSlice";
+import { setUserId, setToken, setUserEmail } from "@/stores/userSlice";
 import { useDispatch } from "react-redux";
+import { useLoginUserMutation } from "@/services/firebaseApi";
+import { FirebaseError } from "firebase/app";
 
 export const useGetLogin = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(false);
-  const [messageApi, contextHolder] = message.useMessage();
+
+  const [loginUser, { isLoading }] = useLoginUserMutation();
 
   const login = async (data: LoginData) => {
     try {
-      setLoading(true);
       const { email, password } = data;
-      const res = await loginUser(email, password);
-      if (res?.success && res?.user) {
-        const token = await res.user.getIdToken();
-        const uid = res.user.uid;
+      const result = await loginUser({ email, password }).unwrap();
+      if (result?.success) {
+        const { uid, token, email } = result;
 
         const tomorrow = new Date();
         tomorrow.setDate(tomorrow.getDate() + 1);
         document.cookie = `token=${token};expires=${tomorrow.toUTCString()}`;
         document.cookie = `uid=${uid};expires=${tomorrow.toUTCString()}`;
 
-        dispatch(setUserId(res.user.uid));
+        dispatch(setUserId(uid));
         dispatch(setToken(token));
+        dispatch(setUserEmail(email));
 
-        messageApi.success("登入成功");
-        navigate("/layout");
+        navigate("/layout", { state: { message: "登入成功" }, replace: true });
       } else {
-        messageApi.error("登入失敗");
+        message.error("登入失敗");
       }
-    } catch (e) {
-      messageApi.error("登入失敗");
-      console.error(e);
-    } finally {
-      setLoading(false);
+    } catch (error: unknown) {
+      console.error("登入錯誤:", error);
+      if (error instanceof FirebaseError) {
+        switch (error.code) {
+          case "auth/invalid-credential":
+            message.error("無效的帳號密碼");
+            break;
+          case "auth/user-not-found":
+            message.error("此帳號不存在");
+            break;
+          case "auth/wrong-password":
+            message.error("密碼錯誤");
+            break;
+          default:
+            message.error("登入失敗，請稍後再試");
+        }
+      }
     }
   };
 
-  return { login, loading, contextHolder };
+  return { login, isLoading };
 };

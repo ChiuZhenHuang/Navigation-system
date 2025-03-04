@@ -22,13 +22,15 @@ const RegisterPage = () => {
     message.error("請檢查資料是否輸入完整");
   };
 
-  const { register, loading } = useGetRegister();
+  const { register, isLoading, contextHolder } = useGetRegister();
+
   const onFinish = async (values: RegisterData) => {
     register(values);
   };
 
   return (
     <div className="bg-orange-50">
+      {contextHolder}
       <Row justify="center" align="middle" className="h-screen">
         <Col xs={20} sm={16} md={12} xl={8}>
           <Form
@@ -103,7 +105,7 @@ const RegisterPage = () => {
                 htmlType="submit"
                 className="p-4 bg-orange-400 transition-colors hover:bg-orange-500/100"
               >
-                {loading && (
+                {isLoading && (
                   <Spin
                     indicator={<LoadingOutlined spin className="text-white" />}
                     size="small"

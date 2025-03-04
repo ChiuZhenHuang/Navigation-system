@@ -1,9 +1,8 @@
-import { useSelector } from "react-redux";
-import { RootState } from "@/store";
+import { useGetCarTypesQuery } from "@/services/firebaseApi";
 
 export const useSearchCarType = (select: string) => {
-  const carTypes = useSelector((state: RootState) => state.carTypes.carTypes);
-  const selectedCar = carTypes.find((car) => car.value === select);
+  const { data: carTypes } = useGetCarTypesQuery();
+  const selectedCar = carTypes?.find((car) => car.carType === select);
 
   return { selectedCar };
 };
