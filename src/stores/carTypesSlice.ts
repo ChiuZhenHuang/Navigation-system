@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import type { CarTypesData } from "@/types/carTypes";
+import type { CarTypes } from "@/types/carTypes";
 
 const initialState = {
-  carTypes: [] as CarTypesData[],
+  carTypes: [] as CarTypes[],
 };
 
 const carTypesSlice = createSlice({

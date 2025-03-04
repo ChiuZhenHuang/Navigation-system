@@ -13,7 +13,7 @@ import { clearToken } from "../stores/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../store";
 import Button from "@/components/ui/button";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useLayoutEffect } from "react";
 import { useGetUserRecord } from "@/hooks/useGetUserRecord";
 import { getCookie } from "@/utils/method";
 import Avatar from "@/components/ui/avatar";
@@ -26,6 +26,8 @@ const LayoutComponent = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+  const [messageApi, contextHolder] = message.useMessage();
+  const [pendingMessage, setPendingMessage] = useState<string | null>(null);
 
   const [collapsed, setCollapsed] = useState(true);
   const [selectedKey, setSelectedKey] = useState("1");
@@ -43,11 +45,21 @@ const LayoutComponent = () => {
   // 檢查是否有 token 和 userId
   const hasAuth = Boolean(getCookie("token") && userId);
 
+  // 設置待處理的msg
   useEffect(() => {
     if (location.state?.message) {
-      message.success(location.state.message);
+      setPendingMessage(location.state.message);
+      window.history.replaceState({}, document.title);
     }
   }, [location.state]);
+
+  // 等待確定dom完成後顯示msg
+  useLayoutEffect(() => {
+    if (pendingMessage) {
+      messageApi.success(pendingMessage);
+      setPendingMessage(null);
+    }
+  }, [pendingMessage, messageApi]);
 
   useEffect(() => {
     const retrievedUid = getCookie("uid") ?? "";
@@ -173,6 +185,7 @@ const LayoutComponent = () => {
 
   return (
     <Layout className="h-screen">
+      {contextHolder}
       <Sider
         trigger={null}
         collapsed={collapsed}

@@ -142,7 +142,7 @@ export const firebaseApi = createApi({
           return { error };
         }
       },
-      providesTags: ["User"],
+      providesTags: ["User"], // 監聽User標籤
     }),
 
     // 保存用戶記錄
@@ -158,7 +158,7 @@ export const firebaseApi = createApi({
           return { error };
         }
       },
-      invalidatesTags: ["User"],
+      invalidatesTags: ["User"], // 清除User標籤緩存
     }),
 
     // 獲取用戶記錄

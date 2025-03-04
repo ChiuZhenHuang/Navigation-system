@@ -4,7 +4,7 @@ import { useSaveUserRecordMutation } from "@/services/firebaseApi";
 export const useSaveRecord = () => {
   const [saveUserRecord, { isLoading }] = useSaveUserRecordMutation();
 
-  const handSave = async (userId: string, action: Action) => {
+  const handleSave = async (userId: string, action: Action) => {
     try {
       const timestamp = Date.now();
       await saveUserRecord({
@@ -19,5 +19,5 @@ export const useSaveRecord = () => {
     }
   };
 
-  return { handSave, isLoading };
+  return { handleSave, isLoading };
 };

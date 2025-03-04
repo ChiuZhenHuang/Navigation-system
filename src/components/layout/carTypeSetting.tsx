@@ -1,7 +1,7 @@
 import Input from "@/components/ui/input";
 import Button from "@/components/ui/button";
 import { InputNumber, message } from "antd";
-import type { CarTypesData, CarTypes } from "@/types/carTypes";
+import type { CarTypes } from "@/types/carTypes";
 import { useEffect, useState } from "react";
 import { useGetCarTypes } from "@/hooks/useGetCarTypes";
 import { useUpdateCarType } from "@/hooks/useUpdateCarType";
@@ -16,9 +16,9 @@ interface ModifiedData {
 }
 
 const CarTypeSetting = () => {
-  const [carTypeData, setCarTypeData] = useState<CarTypes[]>([]);
-  const [modifiedData, setModifiedData] = useState<ModifiedData | null>(null);
+  const [carTypeData, setCarTypeData] = useState<CarTypes[]>([]); // 所有車款資訊
   const [addCar, setAddCar] = useState<CarTypes | null>(null);
+  const [modifiedData, setModifiedData] = useState<ModifiedData | null>(null);
 
   const [messageApi, contextHolder] = message.useMessage();
   const { isLoading: isLoadingCarTypes } = useGetCarTypes();
@@ -27,11 +27,11 @@ const CarTypeSetting = () => {
 
   const totalCarTypes = useSelector(
     (state: RootState) => state.carTypes.carTypes
-  ) as CarTypesData[];
+  ) as CarTypes[];
 
   useEffect(() => {
     if (totalCarTypes) {
-      const newCarData = totalCarTypes.map((car: CarTypesData) => ({
+      const newCarData = totalCarTypes.map((car: CarTypes) => ({
         value: car.value,
         carType: car.value,
         oil: car.oil,

@@ -11,6 +11,7 @@ import { useLocation } from "react-router-dom";
 
 const LoginPage = () => {
   const [form] = Form.useForm();
+  const [messageApi, contextHolder] = message.useMessage();
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -24,17 +25,18 @@ const LoginPage = () => {
 
   const onFinishFailed = (errorInfo: any) => {
     console.log("表單驗證失敗:", errorInfo);
-    message.error("請檢查是否輸入完整");
+    messageApi.error("請檢查是否輸入完整");
   };
 
   useEffect(() => {
     if (location.state?.message) {
-      message.success(location.state.message);
+      messageApi.success(location.state.message);
     }
   }, [location.state]);
 
   return (
     <div className="bg-orange-50">
+      {contextHolder}
       <Row justify="center" align="middle" className="h-screen">
         <Col xs={20} sm={16} md={12} xl={8}>
           <Form

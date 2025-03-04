@@ -44,7 +44,7 @@ interface Props {
 
 function MyMapComponent({ userId, selectCarType }: Props) {
   const [messageApi, contextHolder] = message.useMessage();
-  const { handSave } = useSaveRecord();
+  const { handleSave } = useSaveRecord();
   useGetUserRecord(userId);
   useGetUsersData(userId);
   const { selectedCar } = useSearchCarType(selectCarType);
@@ -53,15 +53,15 @@ function MyMapComponent({ userId, selectCarType }: Props) {
     libraries,
   });
 
-  const [currentPosition, setCurrentPosition] = useState<Position | null>(null);
-  const [selectedPlace, setSelectedPlace] = useState<Position | null>(null);
-  const [map, setMap] = useState<google.maps.Map | null>(null);
-  const [isLocating, setIsLocating] = useState(false);
-  const [searchInput, setSearchInput] = useState("");
-  const [routeInfo, setRouteInfo] = useState<RouteInfo | null>(null);
+  const [currentPosition, setCurrentPosition] = useState<Position | null>(null); // 當前位置
+  const [selectedPlace, setSelectedPlace] = useState<Position | null>(null); // 選擇的目的地
+  const [map, setMap] = useState<google.maps.Map | null>(null); // 地圖實例
+  const [isLocating, setIsLocating] = useState(false); // 是否正在定位
+  const [searchInput, setSearchInput] = useState(""); // 搜尋輸入
+  const [routeInfo, setRouteInfo] = useState<RouteInfo | null>(null); // 路線資訊
   const [directions, setDirections] =
-    useState<google.maps.DirectionsResult | null>(null);
-  const [isNavigating, setIsNavigating] = useState(false);
+    useState<google.maps.DirectionsResult | null>(null); // 路線
+  const [isNavigating, setIsNavigating] = useState(false); // 是否正在導航
 
   const searchInputRef = useRef<InputRef>(null);
   const autoCompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
@@ -84,7 +84,9 @@ function MyMapComponent({ userId, selectCarType }: Props) {
         fields: ["geometry", "formatted_address", "name"],
       });
 
+      // 選擇地點時更新地圖
       autoCompleteRef.current.addListener("place_changed", () => {
+        // 抓取選到的地點
         const place = autoCompleteRef.current?.getPlace();
         if (place?.geometry?.location) {
           const pos = {
@@ -105,6 +107,7 @@ function MyMapComponent({ userId, selectCarType }: Props) {
     }
   }, [isLoaded, map, currentPosition]);
 
+  // 計算路線
   const calculateRoute = (origin: Position, destination: Position) => {
     if (!directionsService.current) return;
 
@@ -145,7 +148,7 @@ function MyMapComponent({ userId, selectCarType }: Props) {
             oil: selectedCar?.oil ?? "未知",
           };
 
-          const result = await handSave(userId, action);
+          const result = await handleSave(userId, action);
           if (result.success) {
             messageApi.success("已儲存路線資料");
           } else {
@@ -161,6 +164,7 @@ function MyMapComponent({ userId, selectCarType }: Props) {
     }
   };
 
+  // 抓取定位
   const getCurrentLocation = () => {
     setIsLocating(true);
     if (navigator.geolocation) {
@@ -196,6 +200,7 @@ function MyMapComponent({ userId, selectCarType }: Props) {
     }
   };
 
+  // 載入地圖
   const onLoad = (mapInstance: google.maps.Map) => {
     setMap(mapInstance);
   };

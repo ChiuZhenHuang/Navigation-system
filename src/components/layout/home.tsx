@@ -4,13 +4,13 @@ import Select from "@/components/ui/select";
 import { useEffect, useState } from "react";
 import { getCookie } from "@/utils/method";
 import Maps from "@/components/layout/maps";
-import { useGetCarTypesQuery } from "@/services/firebaseApi";
+import { useGetCarTypes } from "@/hooks/useGetCarTypes";
 // import Ai from "./ai";
 // import type { ActionResponse } from "@/types/recordType";
 
 const Home = () => {
   const userName = useSelector((state: RootState) => state.user.userName);
-  const { data: carTypes, isLoading } = useGetCarTypesQuery();
+  const { carTypes, isLoading } = useGetCarTypes();
   // const userRecord = useSelector(
   //   (state: RootState) => state.record.totalRecord
   // ); // 所有車款資料
@@ -53,11 +53,11 @@ const Home = () => {
 
   return (
     <div className="sm:p-4">
+      {/* <Ai travelData={transformData} /> */}
       <h5 className="my-2 sm:mb-4">
         歡迎
         <span className="font-bold text-base underline mx-1">{userName}</span>
         回來！
-        {/* <Ai travelData={transformData} /> */}
       </h5>
       <div className="flex items-center mb-4">
         <span className="min-w-[100px]">選擇您的車款：</span>
