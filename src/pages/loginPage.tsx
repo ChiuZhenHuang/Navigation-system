@@ -8,6 +8,7 @@ import type { LoginData } from "@/types/userType";
 import NavigateImg from "@/assets/images/navigate.png";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { FirebaseError } from "firebase/app";
 
 const LoginPage = () => {
   const [form] = Form.useForm();
@@ -18,9 +19,32 @@ const LoginPage = () => {
 
   const { login, isLoading } = useGetLogin();
 
-  const onFinish = (values: LoginData) => {
+  const onFinish = async (values: LoginData) => {
     const { email, password } = values;
-    login({ email, password });
+    try {
+      await login({ email, password });
+    } catch (error) {
+      console.error("登入錯誤:", error);
+      if (error instanceof FirebaseError) {
+        switch (error.code) {
+          case "auth/invalid-credential":
+            messageApi.error("無效的帳號密碼");
+            break;
+          case "auth/user-not-found":
+            messageApi.error("此帳號不存在");
+            break;
+          case "auth/wrong-password":
+            messageApi.error("密碼錯誤");
+            break;
+          default:
+            messageApi.error("登入失敗，請稍後再試");
+        }
+      } else if (error instanceof Error) {
+        messageApi.error(error.message);
+      } else {
+        messageApi.error("登入失敗，請稍後再試");
+      }
+    }
   };
 
   const onFinishFailed = (errorInfo: any) => {
