@@ -1,7 +1,5 @@
 import { useEffect } from "react";
 import { Row, Col } from "antd";
-import { useSelector } from "react-redux";
-import { RootState } from "@/store";
 import Button from "@/components/ui/button";
 import Card from "@/components/ui/card";
 import type { ActionResponse } from "@/types/recordType";
@@ -9,11 +7,12 @@ import { getCookie } from "@/utils/method";
 import { useNavigate } from "react-router-dom";
 import { formatToThousand, calculateOilMoney } from "@/utils/method";
 import Avatar from "@/components/ui/avatar";
+import { useAppSelector } from "@/stores/reduxHook";
 
 const UserInfo = () => {
-  const firsrName = useSelector((state: RootState) => state.user.firstName);
-  const userName = useSelector((state: RootState) => state.user.userName);
-  const record = useSelector((state: RootState) => state.record.totalRecord);
+  const firsrName = useAppSelector((state) => state.user.firstName);
+  const userName = useAppSelector((state) => state.user.userName);
+  const record = useAppSelector((state) => state.record.totalRecord);
 
   const navigate = useNavigate();
 

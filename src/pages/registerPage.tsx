@@ -9,8 +9,8 @@ import { useNavigate } from "react-router-dom";
 import { useGetRegister } from "../hooks/useGetRegister";
 import Button from "@/components/ui/button";
 import Input from "@/components/ui/input";
-import type { RegisterData } from "@/types/userType";
 import NavigateImg from "@/assets/images/navigate.png";
+import type { RegisterData } from "@/types/userType";
 
 const RegisterPage = () => {
   const [form] = Form.useForm();
@@ -56,7 +56,6 @@ const RegisterPage = () => {
               </div>
             </div>
             <Form.Item
-              // label="使用者名稱"
               name="name"
               rules={[
                 { required: true, message: "請輸入使用者名稱" },
@@ -71,7 +70,6 @@ const RegisterPage = () => {
               />
             </Form.Item>
             <Form.Item
-              // label="Email"
               name="email"
               rules={[
                 { required: true, message: "請輸入Email" },
@@ -85,7 +83,6 @@ const RegisterPage = () => {
               />
             </Form.Item>
             <Form.Item
-              // label="密碼"
               name="password"
               rules={[
                 { required: true, message: "請輸入密碼" },

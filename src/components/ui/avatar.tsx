@@ -7,7 +7,7 @@ interface Props extends AvatarProps {
   children?: React.ReactNode;
 }
 
-const Avatar = forwardRef<HTMLButtonElement, Props>(
+const Avatar = forwardRef<HTMLDivElement, Props>(
   ({ className, children, ...props }: Props, ref) => {
     return (
       <AntdAvatar ref={ref} className={cn(className)} {...props}>

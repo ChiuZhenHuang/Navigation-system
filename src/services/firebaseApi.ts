@@ -218,7 +218,7 @@ export const firebaseApi = createApi({
             return {
               error: {
                 success: false,
-                message: "此車款已存在，請使用其他名稱或更新現有資料",
+                message: "此車款已存在，請使用其他名稱",
               },
             };
           }

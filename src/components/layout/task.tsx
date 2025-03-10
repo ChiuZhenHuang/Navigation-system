@@ -4,8 +4,6 @@ import Card from "@/components/ui/card";
 import Button from "@/components/ui/button";
 import CrownIcon from "@/assets/images/crown.png";
 import CupIcon from "@/assets/images/cup.png";
-import { useSelector } from "react-redux";
-import { RootState } from "@/store";
 import { useEffect, useState } from "react";
 import type {
   ActionResponse,
@@ -18,11 +16,10 @@ import {
   taskOptions,
   calculateOilMoney,
 } from "@/utils/method";
+import { useAppSelector } from "@/stores/reduxHook";
 
 const Task = () => {
-  const userRecords = useSelector(
-    (state: RootState) => state.record.totalRecord
-  );
+  const userRecords = useAppSelector((state) => state.record.totalRecord);
 
   const [finalPercent, setFinalPercent] = useState(0); // 總進度百分比
   const [overachievedCount, setOverachievedCount] = useState(0); // 幾個達到目標

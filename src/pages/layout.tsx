@@ -10,7 +10,6 @@ import BreadCrumb from "../components/layout/breadCrumb";
 import { Layout, Menu, message, Dropdown } from "antd";
 import { useNavigate, Outlet } from "react-router-dom";
 import { clearToken } from "../stores/userSlice";
-import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../store";
 import Button from "@/components/ui/button";
 import { useEffect, useState, useCallback, useLayoutEffect } from "react";
@@ -20,12 +19,15 @@ import Avatar from "@/components/ui/avatar";
 import { useGetUsersData } from "@/hooks/useGetUsersData";
 import { useGetCarTypes } from "@/hooks/useGetCarTypes";
 import { useLocation } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "@/stores/reduxHook";
+
 const { Header, Sider, Content } = Layout;
 
 const LayoutComponent = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+
   const [messageApi, contextHolder] = message.useMessage();
   const [pendingMessage, setPendingMessage] = useState<string | null>(null);
 
@@ -38,9 +40,9 @@ const LayoutComponent = () => {
   useGetCarTypes();
   useGetUsersData(userId);
 
+  const firsrName = useAppSelector((state: RootState) => state.user.firstName);
   // Redux selectors
-  const firsrName = useSelector((state: RootState) => state.user.firstName);
-  const userName = useSelector((state: RootState) => state.user.userName);
+  const userName = useAppSelector((state: RootState) => state.user.userName);
 
   // 檢查是否有 token 和 userId
   const hasAuth = Boolean(getCookie("token") && userId);

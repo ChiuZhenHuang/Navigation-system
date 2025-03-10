@@ -1,11 +1,12 @@
 import { useGetUserRecordsQuery } from "@/services/firebaseApi";
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from "@/stores/reduxHook";
 import { setUserEmail, setUserName, setFirstName } from "@/stores/userSlice";
 import { setTotalRecord } from "@/stores/recordSlice";
 import { useEffect } from "react";
 
 export const useGetUserRecord = (userId: string | undefined) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
+
   const {
     data: userRecords,
     isLoading,

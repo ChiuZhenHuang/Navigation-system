@@ -6,8 +6,7 @@ import { useEffect, useState } from "react";
 import { useGetCarTypes } from "@/hooks/useGetCarTypes";
 import { useUpdateCarType } from "@/hooks/useUpdateCarType";
 import { useAddCarType } from "@/hooks/useAddCarType";
-import { useSelector } from "react-redux";
-import { RootState } from "@/store";
+import { useAppSelector } from "@/stores/reduxHook";
 
 interface ModifiedData {
   carType: string;
@@ -25,8 +24,8 @@ const CarTypeSetting = () => {
   const { handleUpdateCarType, isLoading: isUpdating } = useUpdateCarType();
   const { handleAddCarType, isLoading: isAdding } = useAddCarType();
 
-  const totalCarTypes = useSelector(
-    (state: RootState) => state.carTypes.carTypes
+  const totalCarTypes = useAppSelector(
+    (state) => state.carTypes.carTypes
   ) as CarTypes[];
 
   useEffect(() => {

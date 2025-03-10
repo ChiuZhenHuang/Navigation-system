@@ -1,10 +1,11 @@
 import { useGetUsersDataQuery } from "@/services/firebaseApi";
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from "@/stores/reduxHook";
 import { setUserTotalData } from "@/stores/userSlice";
 import { useEffect } from "react";
 
 export const useGetUsersData = (userId: string | undefined) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
+
   const {
     data: usersData,
     isLoading,

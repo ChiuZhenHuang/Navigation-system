@@ -1,10 +1,10 @@
 import { useGetCarTypesQuery } from "@/services/firebaseApi";
-import { useDispatch } from "react-redux";
 import { setCarTypes } from "@/stores/carTypesSlice";
 import { useEffect } from "react";
+import { useAppDispatch } from "@/stores/reduxHook";
 
 export const useGetCarTypes = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { data: carTypes, isLoading, error } = useGetCarTypesQuery();
 
   useEffect(() => {

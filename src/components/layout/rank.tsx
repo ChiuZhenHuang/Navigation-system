@@ -1,8 +1,6 @@
 import Tabs from "@/components/ui/tabs";
-import { RootState } from "@/store";
 import { List, Avatar } from "antd";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import type { totalRecords } from "@/types/recordType";
 import {
   formatToThousand,
@@ -11,10 +9,11 @@ import {
   calculateOilMoney,
 } from "@/utils/method";
 import { cn } from "@/utils/cn";
+import { useAppSelector } from "@/stores/reduxHook";
 
 const Rank = () => {
-  const userTotalData = useSelector(
-    (state: RootState) => state.user.userTotalData
+  const userTotalData = useAppSelector(
+    (state) => state.user.userTotalData
   ) as totalRecords[];
 
   const [nameData, setNameData] = useState<totalRecords[]>([]);

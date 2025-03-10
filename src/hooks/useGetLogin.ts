@@ -2,13 +2,13 @@ import { message } from "antd";
 import { useNavigate } from "react-router-dom";
 import type { LoginData } from "@/types/userType";
 import { setUserId, setToken, setUserEmail } from "@/stores/userSlice";
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from "@/stores/reduxHook";
 import { useLoginUserMutation } from "@/services/firebaseApi";
 import { FirebaseError } from "firebase/app";
 
 export const useGetLogin = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const [loginUser, { isLoading }] = useLoginUserMutation();
 

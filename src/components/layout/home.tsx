@@ -1,17 +1,18 @@
-import { useSelector } from "react-redux";
-import { RootState } from "@/store";
 import Select from "@/components/ui/select";
 import { useEffect, useState } from "react";
 import { getCookie } from "@/utils/method";
 import Maps from "@/components/layout/maps";
 import { useGetCarTypes } from "@/hooks/useGetCarTypes";
+import { useAppSelector } from "@/stores/reduxHook";
 // import Ai from "./ai";
 // import type { ActionResponse } from "@/types/recordType";
 
 const Home = () => {
-  const userName = useSelector((state: RootState) => state.user.userName);
+  const userName = useAppSelector((state) => state.user.userName);
+
   const { carTypes, isLoading } = useGetCarTypes();
-  // const userRecord = useSelector(
+
+  // const userRecord = useAppSelector(
   //   (state: RootState) => state.record.totalRecord
   // ); // 所有車款資料
 
@@ -40,7 +41,7 @@ const Home = () => {
     setUserId(retrievedUid);
   }, []);
 
-  // 當車型數據載入後，設置默認選擇
+  // 當車型數據載入後，預設選擇車款
   useEffect(() => {
     if (carTypes && carTypes.length > 0 && !selectCarType) {
       setSelectCarType(carTypes[0].value);
