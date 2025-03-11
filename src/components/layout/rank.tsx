@@ -76,10 +76,26 @@ const Rank = () => {
         totalOil += calculateOilMoney(distance, rec.action.oil);
       });
 
+      // 另外計算 "每週積分" 過濾近一星期
+      const weekAge = Date.now() - 7 * 24 * 60 * 60 * 1000;
+      const weekRecords = item.records.filter(
+        (rec) => rec.timestamp >= weekAge
+      );
+      const weekDistance = weekRecords.reduce(
+        (sum, rec) =>
+          sum + parseFloat(rec.action.distance.replace(/\s公里\s/g, "")),
+        0
+      );
+      const weekCount = weekRecords.length;
+      const weekOil = weekRecords.reduce((sum, rec) => {
+        const distance =
+          parseFloat(rec.action.distance.replace(/\s公里\s/g, "")) || 0;
+        return sum + calculateOilMoney(distance, rec.action.oil);
+      }, 0);
       const { totalPoints } = calculateTotalPoints(
-        totalDistance,
-        totalCount,
-        totalOil
+        weekDistance,
+        weekCount,
+        weekOil
       );
 
       return {
