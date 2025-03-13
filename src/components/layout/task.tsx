@@ -38,7 +38,7 @@ const Task = () => {
 
       return {
         totalDistance,
-        toalCount: userRecords.length,
+        toalCount: filerWeek.length,
         totalOil,
       };
     });
@@ -57,7 +57,7 @@ const Task = () => {
     const finalRecords = {
       totalDistance: totalSummary.totalDistance.toFixed(1),
       totalOil: totalSummary.totalOil.toFixed(0),
-      toalCount: userRecords.length,
+      toalCount: filerWeek.length,
     };
     setTotalRecord(finalRecords);
   }, [userRecords]);
