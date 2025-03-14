@@ -28,9 +28,11 @@ const LoginPage = () => {
       if (error instanceof FirebaseError) {
         switch (error.code) {
           case "auth/invalid-credential":
+            console.log("無效的帳號密碼");
             messageApi.error("無效的帳號密碼");
             break;
           case "auth/user-not-found":
+            console.log("此帳號不存在");
             messageApi.error("此帳號不存在");
             break;
           case "auth/wrong-password":
@@ -47,7 +49,7 @@ const LoginPage = () => {
     }
   };
 
-  const onFinishFailed = (errorInfo: any) => {
+  const onFinishFailed = (errorInfo: unknown) => {
     console.log("表單驗證失敗:", errorInfo);
     messageApi.error("請檢查是否輸入完整");
   };
@@ -56,7 +58,7 @@ const LoginPage = () => {
     if (location.state?.message) {
       messageApi.success(location.state.message);
     }
-  }, [location.state]);
+  }, [location.state, messageApi]);
 
   return (
     <div className="bg-orange-50">

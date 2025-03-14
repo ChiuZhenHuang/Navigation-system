@@ -17,7 +17,7 @@ const RegisterPage = () => {
 
   const navigate = useNavigate();
 
-  const onFinishFailed = async (errorInfo: any) => {
+  const onFinishFailed = async (errorInfo: unknown) => {
     console.log("表單驗證失敗:", errorInfo);
     message.error("請檢查資料是否輸入完整");
   };

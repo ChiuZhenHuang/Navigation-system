@@ -3,6 +3,7 @@ import type { LoginData } from "@/types/userType";
 import { setUserId, setToken, setUserEmail } from "@/stores/userSlice";
 import { useAppDispatch } from "@/stores/reduxHook";
 import { useLoginUserMutation } from "@/services/firebaseApi";
+
 export const useGetLogin = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();

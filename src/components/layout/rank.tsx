@@ -57,7 +57,7 @@ const Rank = () => {
       let totalDistance = 0;
       let totalTime = 0;
       let totalOil = 0;
-      let totalCount = item.records.length;
+      const totalCount = item.records.length;
 
       item.records.forEach((rec) => {
         const distance =
@@ -65,7 +65,7 @@ const Rank = () => {
         totalDistance += distance;
 
         // 解析時間格式
-        let time = rec.action.time;
+        const time = rec.action.time;
         const hourMatch = time.match(/(\d+)\s小時/);
         const minuteMatch = time.match(/(\d+)\s分鐘/);
         const hours = hourMatch ? parseInt(hourMatch[1], 10) : 0;

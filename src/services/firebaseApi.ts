@@ -62,12 +62,12 @@ export const firebaseApi = createApi({
               name: name,
             },
           };
-        } catch (error: any) {
+        } catch (error: unknown) {
           return {
             error: {
               success: false,
-              code: error.code,
-              message: error.message,
+              code: (error as { code?: string })?.code,
+              message: (error as { message?: string })?.message,
             },
           };
         }
@@ -240,10 +240,10 @@ export const firebaseApi = createApi({
           if (snapshot.exists()) {
             const data = snapshot.val();
             const carTypesArray = Object.entries(data).map(
-              ([key, value]: [string, any]) => ({
+              ([key, value]: [string, unknown]) => ({
                 value: key,
                 carType: key,
-                oil: value.oil,
+                oil: (value as { oil: string }).oil,
               })
             );
             return { data: carTypesArray };
