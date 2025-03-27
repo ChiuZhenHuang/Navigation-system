@@ -108,6 +108,7 @@ const AiChat = () => {
 
         onSuccess(text); // 回傳 AI 的回答
       } catch (error) {
+        console.error("AI 回覆發生錯誤:", error);
         onError(new Error("Gemini API 發生錯誤，請稍後再試"));
         messageApi.error("AI 回覆發生錯誤，請稍後再試");
       }
