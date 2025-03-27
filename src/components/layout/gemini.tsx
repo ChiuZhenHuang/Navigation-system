@@ -6,6 +6,8 @@ import { Bubble, Sender, useXAgent, useXChat } from "@ant-design/x";
 import Button from "@/components/ui/button";
 import { useStore } from "react-redux";
 import { RootState } from "@/store";
+// import { useAppSelector } from "@/stores/reduxHook";
+// import Avatar from "@/components/ui/avatar";
 
 const genAI = new GoogleGenerativeAI(
   import.meta.env.VITE_API_GOOGLE_GENERATIVE_AI_KEY
@@ -14,7 +16,7 @@ const genAI = new GoogleGenerativeAI(
 const roles: GetProp<typeof Bubble.List, "roles"> = {
   ai: {
     placement: "start",
-    avatar: { icon: <RobotOutlined />, style: { background: "#fde3cf" } },
+    avatar: { icon: <RobotOutlined />, style: { background: "#f5c6a5" } },
     typing: { step: 5, interval: 20 },
     style: {
       maxWidth: 600,
@@ -30,6 +32,26 @@ const roles: GetProp<typeof Bubble.List, "roles"> = {
 };
 
 const AiChat = () => {
+  // const firsrName = useAppSelector((state) => state.user.firstName);
+
+  // const roles: GetProp<typeof Bubble.List, "roles"> = {
+  //   ai: {
+  //     placement: "start",
+  //     avatar: { icon: <RobotOutlined />, style: { background: "#f5c6a5" } },
+  //     typing: { step: 5, interval: 20 },
+  //     style: {
+  //       maxWidth: 600,
+  //     },
+  //   },
+  //   local: {
+  //     placement: "end",
+  //     avatar: {
+  //       icon: <Avatar>{firsrName}</Avatar>,
+  //       style: { background: "#d3d3d3" },
+  //     },
+  //   },
+  // };
+
   const store = useStore<RootState>();
 
   const [messageApi, contextHolder] = message.useMessage();

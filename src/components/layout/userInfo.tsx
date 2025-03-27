@@ -28,7 +28,7 @@ const UserInfo = () => {
       <Row justify="center" align="middle" className="m-4">
         <Col xs={24} sm={8} className="flex justify-center items-center">
           <Avatar size={100} className="border-4 border-white">
-            <div className=" text-4xl">{firsrName}</div>
+            <div className="text-4xl">{firsrName}</div>
           </Avatar>
         </Col>
         <Col xs={24} sm={16} className="flex justify-center items-center">
