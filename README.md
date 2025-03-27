@@ -29,7 +29,7 @@
 
 ![登入頁面](./src/assets/images/login.png)
 ![導航頁面](./src/assets/images/home.png)
-![AI聊天機器人](./src/assets/images/chat.png)）
+![AI聊天機器人](./src/assets/images/chat.png)
 ![任務頁面](./src/assets/images/task.png)
 ![排行榜頁面](./src/assets/images/rank.png)
 ![個人資訊頁面](./src/assets/images/userInfo.png)
