@@ -1,8 +1,59 @@
-#導航紀錄系統
+<!-- # React + TypeScript + Vite
 
-###這是一個基於 React、TypeScript 和 Vite 構建的現代化前端應用程式，組合導航功能與個人任務管理，幫助使用者記錄導航活動、追蹤目標並與其他使用者競爭。專案整合了 Google Map API 和 Gemini AI 聊天機器人，使用 Firebase 作為後端資料庫，提供流畅的使用體驗。
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-##功能特色
+Currently, two official plugins are available:
+
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+
+## Expanding the ESLint configuration
+
+If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+
+- Configure the top-level `parserOptions` property like this:
+
+```js
+export default tseslint.config({
+  languageOptions: {
+    // other options...
+    parserOptions: {
+      project: ['./tsconfig.node.json', './tsconfig.app.json'],
+      tsconfigRootDir: import.meta.dirname,
+    },
+  },
+})
+```
+
+- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
+- Optionally add `...tseslint.configs.stylisticTypeChecked`
+- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+
+```js
+// eslint.config.js
+import react from 'eslint-plugin-react'
+
+export default tseslint.config({
+  // Set the react version
+  settings: { react: { version: '18.3' } },
+  plugins: {
+    // Add the react plugin
+    react,
+  },
+  rules: {
+    // other rules...
+    // Enable its recommended rules
+    ...react.configs.recommended.rules,
+    ...react.configs['jsx-runtime'].rules,
+  },
+})
+``` -->
+
+# 導航紀錄系統
+
+### 這是一個基於 React、TypeScript 和 Vite 構建的現代化前端應用程式，組合導航功能與個人任務管理，幫助使用者記錄導航活動、追蹤目標並與其他使用者競爭。專案整合了 Google Map API 和 Gemini AI 聊天機器人，使用 Firebase 作為後端資料庫，提供流暢的使用體驗。
+
+## 功能特色
 
 註冊與登入系統：使用者可透過安全的註冊與登入功能建立個人帳戶，保護資料並啟用個人化功能。
 
@@ -18,7 +69,7 @@ Gemini AI 聊天機器人：內建 Gemini AI，提供智慧對話功能，解答
 
 RWD 平台透明化：提供充分的品質自适應介面，使用 Tailwind CSS 來確保應用程式在所有平台上都能保持優秀的觀看與操作體驗。
 
-##使用技術
+## 使用技術
 
 React：構建動態且高效的使用者介面。
 
@@ -26,11 +77,11 @@ TypeScript：提升程式碼品質與型別安全性。
 
 Vite：提供快速的開發環境並支援熱模組替換 (HMR)。
 
-##資料庫
+## 資料庫
 
 Firebase：用於儲存使用者資料、導航記錄與任務資訊，支持即時同步。
 
-前端工具與 UI 庫
+## 前端工具與 UI 庫
 
 Ant Design (antd)：美觀且功能強大的 UI 組件庫。
 
@@ -43,4 +94,6 @@ Redux Toolkit：管理應用程式狀態，確保資料流的可預測性。
 ![登入頁面](./src/assets/images/login.png)
 ![導航頁面](./src/assets/images/home.png)
 ![AI聊天機器人](./src/assets/images/chat.png)）
-![任務頁面](./src/assets/images/task.png)）
+![任務頁面](./src/assets/images/task.png)
+![排行榜頁面](./src/assets/images/rank.png)
+![個人資訊頁面](./src/assets/images/userInfo.png)
