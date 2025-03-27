@@ -10,7 +10,6 @@ import BreadCrumb from "../components/layout/breadCrumb";
 import { Layout, Menu, message, Dropdown } from "antd";
 import { useNavigate, Outlet } from "react-router-dom";
 import { clearToken } from "../stores/userSlice";
-import type { RootState } from "../store";
 import Button from "@/components/ui/button";
 import { useEffect, useState, useCallback, useLayoutEffect } from "react";
 import { useGetUserRecord } from "@/hooks/useGetUserRecord";
@@ -20,6 +19,7 @@ import { useGetUsersData } from "@/hooks/useGetUsersData";
 import { useGetCarTypes } from "@/hooks/useGetCarTypes";
 import { useLocation } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "@/stores/reduxHook";
+import Gemini from "@/components/layout/gemini";
 
 const { Header, Sider, Content } = Layout;
 
@@ -40,9 +40,9 @@ const LayoutComponent = () => {
   useGetCarTypes();
   useGetUsersData(userId);
 
-  const firsrName = useAppSelector((state: RootState) => state.user.firstName);
+  const firsrName = useAppSelector((state) => state.user.firstName);
   // Redux selectors
-  const userName = useAppSelector((state: RootState) => state.user.userName);
+  const userName = useAppSelector((state) => state.user.userName);
 
   // 檢查是否有 token 和 userId
   const hasAuth = Boolean(getCookie("token") && userId);
@@ -263,12 +263,16 @@ const LayoutComponent = () => {
               <div className="flex flex-col h-full bg-white p-2 shadow-lg sm:rounded-md sm:border">
                 <BreadCrumb setSelectedKey={setSelectedKey} />
                 {isLoading ? (
-                  <div>載入中...</div>
+                  <>
+                    <div>載入中...</div>
+                  </>
                 ) : (
                   <div className="flex-1 overflow-auto">
                     <Outlet />
                   </div>
                 )}
+
+                <Gemini />
               </div>
             </div>
           </div>

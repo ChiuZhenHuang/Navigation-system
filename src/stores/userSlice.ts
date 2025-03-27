@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import type { User } from "@/types/firebaseType";
 
 const initialState = {
   token: "",
@@ -6,7 +7,7 @@ const initialState = {
   userName: "",
   userId: "",
   firstName: "",
-  userTotalData: [],
+  userTotalData: <User[]>[],
 };
 
 const userSlice = createSlice({
