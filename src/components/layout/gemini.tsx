@@ -63,7 +63,7 @@ const AiChat = () => {
     request: async ({ message }, { onSuccess, onError }) => {
       try {
         const model = genAI.getGenerativeModel({
-          model: "gemini-2.0-flash",
+          model: "gemini-2.5-flash",
         });
         // 重新取得所有資料
         const state = store.getState();
